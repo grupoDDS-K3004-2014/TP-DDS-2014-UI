@@ -1,0 +1,47 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>DDS-2014</groupId>
+	<artifactId>TP-DDS-2014-UI</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>TP-DDS-2014-UI</name>
+
+	<parent>
+		<groupId>org.uqbar-project</groupId>
+		<artifactId>uqbar-xtend-parent</artifactId>
+		<version>2.6.2</version>
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+
+	<dependencies>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.11</version>
+		</dependency>
+		<dependency>
+			<groupId>org.uqbar-project</groupId>
+			<artifactId>arena-jface</artifactId>
+			<version>3.3-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.DDS-2014</groupId>
+			<artifactId>TP-DDS-2014-DOMAIN</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+			<scope>build</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.xtend</groupId>
+			<artifactId>org.eclipse.xtend.lib</artifactId>
+			<version>2.7.1</version>
+		</dependency>
+
+	</dependencies>
+
+</project>
