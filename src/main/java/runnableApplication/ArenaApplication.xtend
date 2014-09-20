@@ -1,0 +1,5 @@
+package runnableApplication
+
+class ArenaApplication {
+	
+}
