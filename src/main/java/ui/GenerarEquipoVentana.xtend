@@ -27,7 +27,7 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 
 		title = "Generar equipos"
 
-		new Label(mainPanel).setText(partidoClon.nombreDelPartido).setFontSize(15)
+		new Label(mainPanel).setText(modelObject.modeloPartido.nombreDelPartido).setFontSize(15)
 
 		var panelDos = new Panel(mainPanel)
 		panelDos.setLayout(new ColumnLayout(2))
@@ -39,7 +39,7 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 		tablaParticipantes.bindItemsToProperty("modeloPartido.participantes")
 		new Column<Participante>(tablaParticipantes).setTitle("Nombre").bindContentsToProperty("nombre").
 			setFixedSize(120)
-
+		new Label(panelTablas)
 		new Label(panelTablas).setText("Ordenamiento Tentativo")
 		var tablaParticipantesOrdenTentativo = new Table<Participante>(panelTablas, typeof(Participante))
 		tablaParticipantesOrdenTentativo.setHeigth(120)
@@ -50,22 +50,50 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 		new Label(panelCriterios).setText("Criterios de Ordenamiento")
 
 		var panelCriteriosCheckbox = new Panel(panelCriterios)
-
 		panelCriteriosCheckbox.setLayout(new ColumnLayout(3))
-
 		new Label(panelCriteriosCheckbox).setText("Handicap")
 		new Label(panelCriteriosCheckbox)
 		new CheckBox(panelCriteriosCheckbox).bindValueToProperty("criterioHandicapValidator")
-
 		new Label(panelCriteriosCheckbox).setText("Ultimo partido")
 		new Label(panelCriteriosCheckbox)
 		new CheckBox(panelCriteriosCheckbox).bindValueToProperty("criterioUltimoPartidoValidator")
-
 		new Label(panelCriteriosCheckbox).setText("Ultimos N partido")
 		new TextBox(panelCriteriosCheckbox).bindValueToProperty("cantidadPartidos")
 		new CheckBox(panelCriteriosCheckbox).bindValueToProperty("criterioUltimosNPartidosValidator")
 
+
 		new Button(panelCriterios).setCaption("Ordenar jugadores").onClick([|modelObject.ordenarJugadores])
+		new Label(panelCriterios)
+		new Label(panelCriterios)
+		new Button(panelCriterios).setCaption("Generar equipos").onClick([|modelObject.generarEquipos])
+		
+		panelCriteriosCheckbox = new Panel(panelCriterios)
+		panelCriteriosCheckbox.setLayout(new ColumnLayout(3))
+		new Label(panelCriteriosCheckbox).setText("Par/Impar")
+		new Label(panelCriteriosCheckbox)
+		new CheckBox(panelCriteriosCheckbox).bindValueToProperty("paridadValidator")
+		new Label(panelCriteriosCheckbox).setText("Ultimo partido")
+		new Label(panelCriteriosCheckbox)
+		new CheckBox(panelCriteriosCheckbox).bindValueToProperty("criterioUltimoPartidoValidator")
+		new Label(panelCriteriosCheckbox).setText("Ultimos N partido")
+		new TextBox(panelCriteriosCheckbox).bindValueToProperty("cantidadPartidos")
+		new CheckBox(panelCriteriosCheckbox).bindValueToProperty("criterioUltimosNPartidosValidator")
+
+		var panelEquiposParaConfirmar = new Panel(mainPanel)
+		panelEquiposParaConfirmar.setLayout(new ColumnLayout(2))
+
+		var panelTabla = new Panel(panelEquiposParaConfirmar)
+		new Label(panelTabla).setText("EquipoA")
+		var tablaEquipoA = new Table<Participante>(panelTabla, typeof(Participante))
+		tablaParticipantes.bindItemsToProperty("modeloPartido.equipoA")
+		new Column<Participante>(tablaEquipoA).setTitle("Nombre").bindContentsToProperty("nombre").setFixedSize(120)
+
+		panelTabla = new Panel(panelEquiposParaConfirmar)
+
+		new Label(panelTabla).setText("EquipoB")
+		var tablaEquipoB = new Table<Participante>(panelTabla, typeof(Participante))
+		tablaParticipantes.bindItemsToProperty("modeloPartido.participantes")
+		new Column<Participante>(tablaEquipoB).setTitle("Nombre").bindContentsToProperty("nombre").setFixedSize(120)
 
 	}
 
