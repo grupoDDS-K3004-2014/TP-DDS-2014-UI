@@ -10,7 +10,7 @@ import java.util.ArrayList
 import org.uqbar.commons.model.Entity
 import org.uqbar.commons.model.UserException
 import org.uqbar.commons.utils.Observable
-import domain.DivisionEquipos
+import java.util.Arrays
 
 @Observable
 class GenerarEquiposApplicationModel extends Entity {
@@ -82,13 +82,16 @@ class GenerarEquiposApplicationModel extends Entity {
 		validarOrdenPrevio
 		if (posicionCustom) {
 			validarTextbox
-			sistema.generarEquiposTentativos(new DivisionEquipos, modeloPartido, parseArrayPosicionesCustom)
+			sistema.generarEquiposTentativos( modeloPartido, parseArrayPosicionesCustom)
+			sistema.confirmarEquipos(modeloPartido)
 		}
 		if (parImparValidator) {
 			if (opcionSeleccionada == "Par") {
-				sistema.generarEquiposTentativos(new DivisionEquipos, modeloPartido, #[1, 3, 5, 7, 9])
+				sistema.generarEquiposTentativos( modeloPartido, new ArrayList<Integer>(Arrays.asList(1,3,5,7,9)))
+				sistema.confirmarEquipos(modeloPartido)
 			} else {
-				sistema.generarEquiposTentativos(new DivisionEquipos, modeloPartido, #[0, 2, 4, 6, 8])
+				sistema.generarEquiposTentativos( modeloPartido, new ArrayList<Integer>(Arrays.asList(0,2,4,6,8)))
+				sistema.confirmarEquipos(modeloPartido)
 			}
 		} else {
 			throw new UserException("No hay ningun criterio de selección marcado")
@@ -113,7 +116,7 @@ class GenerarEquiposApplicationModel extends Entity {
 	}
 
 	def Integer toInt(String numeroString) {
-		Integer.parseInt(numeroString)
+		Integer.parseInt(numeroString) -1
 	}
 
 	def validarUnicidadParImpar() {
