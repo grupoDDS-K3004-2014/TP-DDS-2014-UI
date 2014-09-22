@@ -10,11 +10,11 @@ import domain.Participante
 import java.util.List
 import java.util.ArrayList
 import org.uqbar.commons.utils.ApplicationContext
-import ui.HomeJugadores
+import home.HomeJugadores
 
 @Observable
 
-class BuscardorDeJugadores implements Serializable {
+class BuscardorDeJugadoresApplicationModel implements Serializable {
 	@Property String nombre
 	@Property Date fechaNacimiento
 	@Property int handicap

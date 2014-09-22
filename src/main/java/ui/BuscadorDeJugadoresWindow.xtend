@@ -11,11 +11,11 @@ import domain.Participante
 import org.uqbar.arena.widgets.tables.Table
 import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.Button
-import applicationModel.BuscardorDeJugadores
+import applicationModel.BuscardorDeJugadoresApplicationModel
 
-class BuscadorDeJugadoresWindow extends SimpleWindow<BuscardorDeJugadores> {
+class BuscadorDeJugadoresWindow extends SimpleWindow<BuscardorDeJugadoresApplicationModel> {
 	
-	new(WindowOwner parent, BuscardorDeJugadores model) {
+	new(WindowOwner parent, BuscardorDeJugadoresApplicationModel model) {
 		super(parent, model)
 		// se dispara la busqueda aca, aunque esto habria que revisarlo, 
 		//es una posibilidad segun el tutorial de arena que la busqueda se dispare aca

@@ -14,6 +14,7 @@ import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.tables.Table
 import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.windows.WindowOwner
+import org.uqbar.arena.layout.VerticalLayout
 
 class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 
@@ -25,89 +26,112 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 	}
 
 	override protected createFormPanel(Panel mainPanel) {
-		
-		title = "Generar equipos"
 
+		title = "Generar equipos"
+		mainPanel.setLayout(new VerticalLayout)
 		new Label(mainPanel).setText(modelObject.modeloPartido.nombreDelPartido).setFontSize(15)
 
-		var panelDos = new Panel(mainPanel)
-		panelDos.setLayout(new ColumnLayout(2))
-		var panelTablas = new Panel(panelDos)
-		var panelCriterios = new Panel(panelDos)
+		var panelArriba = new Panel(mainPanel)
+		var panelAbajo = new Panel(mainPanel)
 
-		new Label(panelTablas).setText("Jugadores Anotados")
-		var tablaParticipantes = new Table<Participante>(panelTablas, typeof(Participante))
+		panelArriba.setLayout(new ColumnLayout(2))
+		panelAbajo.setLayout(new ColumnLayout(2))
+
+		var panelTabla = new Panel(panelArriba)
+		var panelBotones = new Panel(panelArriba)
+
+		//Creo tabla de participantes anotados
+		new Label(panelTabla).setText("Jugadores Anotados")
+		var tablaParticipantes = new Table<Participante>(panelTabla, typeof(Participante))
+
 		tablaParticipantes.bindItemsToProperty("modeloPartido.participantes")
-		new Column<Participante>(tablaParticipantes).setTitle("Nombre").bindContentsToProperty("nombre").
-			setFixedSize(120)
-		
-		new Label(panelTablas).setText("Ordenamiento Tentativo")
-		var tablaParticipantesOrdenTentativo = new Table<Participante>(panelTablas, typeof(Participante))
-		tablaParticipantesOrdenTentativo.setHeigth(120)
+		new Column<Participante>(tablaParticipantes).setTitle("Nombre").bindContentsToProperty("nombre")
+
+		panelTabla = new Panel(panelArriba)
+
+		//Tabla de participantes ya ordenados
+		new Label(panelTabla).setText("Ordenamiento Tentativo")
+		var tablaParticipantesOrdenTentativo = new Table<Participante>(panelTabla, typeof(Participante))
+		tablaParticipantesOrdenTentativo.setHeigth(200)
 		tablaParticipantesOrdenTentativo.bindItemsToProperty("modeloPartido.jugadoresOrdenados")
-		new Column<Participante>(tablaParticipantesOrdenTentativo).setTitle("Nombre").bindContentsToProperty("nombre").
-			setFixedSize(120)
+		new Column<Participante>(tablaParticipantesOrdenTentativo).setTitle("Nombre").bindContentsToProperty("nombre")
 
-		new Label(panelCriterios).setText("Criterios de Ordenamiento")
+		new Label(panelAbajo).setText("EquipoA")
+		new Label(panelAbajo).setText("EquipoB")
+		var tablaEquipoA = new Table<Participante>(panelAbajo, typeof(Participante))
+		tablaEquipoA.bindItemsToProperty("modeloPartido.equipoA")
+		new Column<Participante>(tablaEquipoA).setTitle("Nombre").bindContentsToProperty("nombre")
 
-		var panelCriteriosCheckbox = new Panel(panelCriterios)
-		panelCriteriosCheckbox.setLayout(new ColumnLayout(3))
-		new Label(panelCriteriosCheckbox).setText("Handicap")
-		new Label(panelCriteriosCheckbox)
-		new CheckBox(panelCriteriosCheckbox).bindValueToProperty("criterioHandicapValidator")
-		new Label(panelCriteriosCheckbox).setText("Ultimo partido")
-		new Label(panelCriteriosCheckbox)
-		new CheckBox(panelCriteriosCheckbox).bindValueToProperty("criterioUltimoPartidoValidator")
-		new Label(panelCriteriosCheckbox).setText("Ultimos N partido")
-		new TextBox(panelCriteriosCheckbox).bindValueToProperty("cantidadPartidos")
-		new CheckBox(panelCriteriosCheckbox).bindValueToProperty("criterioUltimosNPartidosValidator")
+		var tablaEquipoB = new Table<Participante>(panelAbajo, typeof(Participante))
+		tablaEquipoB.bindItemsToProperty("modeloPartido.equipoA")
+		new Column<Participante>(tablaEquipoB).setTitle("Nombre").bindContentsToProperty("nombre")
 
+		// Creo criterios de ordenamiento
+		var panelTexto = new Panel(panelBotones)
+		new Panel(panelBotones)
+		var panelInput = new Panel(panelBotones)
+		var panelBoton = new Panel(panelBotones)
+		panelInput.setLayout(new ColumnLayout(3))
 
-		new Button(panelCriterios).setCaption("Ordenar jugadores").onClick([|modelObject.ordenarJugadores])
-		new Label(panelCriterios)
-		new Label(panelCriterios)
+		new Label(panelTexto).setText("Criterios de ordenamiento")
+
+		new Label(panelInput).setText("Handicap")
+		new Label(panelInput)
+		new CheckBox(panelInput).bindValueToProperty("criterioHandicapValidator")
+
+		new Label(panelInput).setText("Ultimo partido")
+		new Label(panelInput)
+		new CheckBox(panelInput).bindValueToProperty("criterioUltimoPartidoValidator")
+
+		new Label(panelInput).setText("Ultimos N partido")
+		new TextBox(panelInput).bindValueToProperty("cantidadPartidos")
+		new CheckBox(panelInput).bindValueToProperty("criterioUltimosNPartidosValidator")
+
+		new Button(panelBoton).setCaption("Ordenar jugadores").onClick([|modelObject.ordenarJugadores])
+
+		new Panel(panelBotones)
+		new Panel(panelBotones)
+		new Panel(panelBotones)
+		new Panel(panelBotones)
+		new Panel(panelBotones)
+		new Panel(panelBotones)
+		new Panel(panelBotones)
+		new Panel(panelBotones)
+		new Panel(panelBotones)
+		new Panel(panelBotones)
+		new Panel(panelBotones)
+		new Panel(panelBotones)
+		new Panel(panelBotones)
+		new Panel(panelBotones)
+		new Panel(panelBotones)
+		new Panel(panelBotones)
+		new Panel(panelBotones)
+		new Panel(panelBotones)
 		
-		
-		panelCriteriosCheckbox = new Panel(panelCriterios)
-		panelCriteriosCheckbox.setLayout(new ColumnLayout(3))
-		new Label(panelCriteriosCheckbox).setText("Por paridad para EquipoA")
-		new CheckBox(panelCriteriosCheckbox).bindValueToProperty("parImparValidator")
-		var selectorParImpar = new Selector(panelCriteriosCheckbox)
-		selectorParImpar.bindItemsToProperty("selectorOpcion")	
-		selectorParImpar.bindValueToProperty("opcionSeleccionada")	
+		panelTexto = new Panel(panelBotones)
+		new Panel(panelBotones)
+		panelInput = new Panel(panelBotones)
+		panelBoton = new Panel(panelBotones)
+		panelInput.setLayout(new ColumnLayout(3))
+
+		new Label(panelTexto).setText("Criterios de seleccion")
+
+	
+		new Label(panelInput).setText("Por paridad para EquipoA")
+		new CheckBox(panelInput).bindValueToProperty("parImparValidator")
+		var selectorParImpar = new Selector(panelInput)
+		selectorParImpar.bindItemsToProperty("selectorOpcion")
+		selectorParImpar.bindValueToProperty("opcionSeleccionada")
 		selectorParImpar.bindVisibleToProperty("parImparValidator")
-		
-		panelCriteriosCheckbox = new Panel(panelCriterios)
-		panelCriteriosCheckbox.setLayout(new ColumnLayout(3))
-		new Label(panelCriteriosCheckbox).setText("Posicion personalizada EquipoA")
-		new CheckBox(panelCriteriosCheckbox).bindValueToProperty("posicionCustom")
-		var arrayCustom = new TextBox(panelCriteriosCheckbox)
+
+		new Label(panelInput).setText("Posicion personalizada EquipoA")
+		new CheckBox(panelInput).bindValueToProperty("posicionCustom")
+		var arrayCustom = new TextBox(panelInput)
 		arrayCustom.bindEnabledToProperty("posicionCustom")
 		arrayCustom.bindValueToProperty("arrayCustom")
-		
-		new Button(panelCriterios).setCaption("Generar equipos").onClick([|modelObject.generarEquipos])
-		
-		
-		
-		
-		
-		
 
-		var panelEquiposParaConfirmar = new Panel(mainPanel)
-		panelEquiposParaConfirmar.setLayout(new ColumnLayout(2))
-
-		var panelTabla = new Panel(panelEquiposParaConfirmar)
-		new Label(panelTabla).setText("EquipoA")
-		var tablaEquipoA = new Table<Participante>(panelTabla, typeof(Participante))
-		tablaEquipoA.bindItemsToProperty("modeloPartido.equipoA")
-		new Column<Participante>(tablaEquipoA).setTitle("Nombre").bindContentsToProperty("nombre").setFixedSize(120)
-
-		panelTabla = new Panel(panelEquiposParaConfirmar)
-
-		new Label(panelTabla).setText("EquipoB")
-		var tablaEquipoB = new Table<Participante>(panelTabla, typeof(Participante))
-		tablaEquipoB.bindItemsToProperty("modeloPartido.equipoA")
-		new Column<Participante>(tablaEquipoB).setTitle("Nombre").bindContentsToProperty("nombre").setFixedSize(120)
+		new Button(panelBoton).setCaption("Generar equipos").onClick(
+			[|modelObject.generarEquipos])
 
 	}
 

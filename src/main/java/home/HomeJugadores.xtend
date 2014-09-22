@@ -1,4 +1,4 @@
-package ui
+package home
 
 import org.uqbar.commons.model.CollectionBasedHome
 import domain.Participante
