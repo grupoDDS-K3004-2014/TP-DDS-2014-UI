@@ -11,6 +11,7 @@ import org.uqbar.commons.model.Entity
 import org.uqbar.commons.model.UserException
 import org.uqbar.commons.utils.Observable
 import domain.DivisionEquipos
+import domain.Participante
 
 @Observable
 class GenerarEquiposApplicationModel extends Entity {
@@ -27,6 +28,7 @@ class GenerarEquiposApplicationModel extends Entity {
 	@Property String opcionSeleccionada = "Par"
 	@Property boolean posicionCustom = false
 	@Property String arrayCustom = ""
+	@Property Participante jugadorSeleccionado
 
 	new(Partido partido) {
 		modeloPartido = partido

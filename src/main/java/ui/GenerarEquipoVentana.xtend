@@ -47,6 +47,7 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 		tablaParticipantesOrdenTentativo.bindItemsToProperty("modeloPartido.jugadoresOrdenados")
 		new Column<Participante>(tablaParticipantesOrdenTentativo).setTitle("Nombre").bindContentsToProperty("nombre").
 			setFixedSize(120)
+		tablaParticipantesOrdenTentativo.bindValueToProperty("jugadorSeleccionado")
 
 		new Label(panelCriterios).setText("Criterios de Ordenamiento")
 
@@ -64,6 +65,7 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 
 
 		new Button(panelCriterios).setCaption("Ordenar jugadores").onClick([|modelObject.ordenarJugadores])
+		new Button(panelCriterios).setCaption("Ver Jugador").onClick[|this.mostrarJugador]
 		new Label(panelCriterios)
 		new Label(panelCriterios)
 		
@@ -119,5 +121,16 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 			this.cancel
 		]
 	}
+	
+	def void mostrarJugador() {
 
-}
+		this.openDialog(new ventanaJugador(this, modelObject.jugadorSeleccionado))
+	}
+
+	def openDialog(Dialog<?> dialog) {
+		dialog.open
+	}
+	
+	}
+
+
