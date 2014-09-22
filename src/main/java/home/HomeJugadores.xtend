@@ -12,7 +12,6 @@ import org.uqbar.commons.model.CollectionBasedHome
 
 class HomeJugadores extends CollectionBasedHome<Participante>{
 	
-	// tal vez haya que unificarla con la de los chicos
 	
 	SimpleDateFormat formatoDelTexto 
 	List<Participante> resultados=new ArrayList<Participante>
@@ -60,16 +59,64 @@ class HomeJugadores extends CollectionBasedHome<Participante>{
 	}
 	
 	def search(String nombre, Date fechaNacimiento, int handicapInicial,int handicapFinal, String apodo,boolean tieneInfraccion,boolean noTieneInfraccion,long promedioDesde,long promedioHasta) {
-		allInstances.filter[jugador|jugador.tieneElNombre(nombre)&&jugador.tieneElApodo(apodo)&&jugador.cumpleCon(handicapInicial)&&jugador.suHandicapEsMenorA(handicapFinal)&&jugador.fechaAnteriorA(fechaNacimiento)&&jugador.cumpleInfracciones(tieneInfraccion,noTieneInfraccion)&&jugador.tienePromedioMenorA(promedioHasta)&&jugador.tienePromedioMayorA(promedioDesde)].toList
+		allInstances.filter[jugador|this.tieneElNombre(nombre,jugador.nombre)&&this.tieneElApodo(apodo,jugador.apodo)&&this.cumpleCon(handicapInicial,jugador.handicap)&&this.suHandicapEsMenorA(handicapFinal,jugador.handicap)&&this.fechaAnteriorA(fechaNacimiento,jugador.fechaNacimiento)&&this.cumpleInfracciones(tieneInfraccion,noTieneInfraccion,jugador.infracciones)&&this.tienePromedioMenorA(promedioHasta,jugador.promedio)&&this.tienePromedioMayorA(promedioDesde,jugador.promedio)].toList
 	}
 	
 	
-	// de todos los jugadores, se fija que de los de la home coincidan con lo que puse en la busqueda
-	//si por ejemplo pongo Laura con handicap 100, como ya no existe el nombre Laura en la home, entonces me devuelve false
-	// al devolver false se corta la busqueda, porque ya no cumple con una de las propiedades
-	//en cambio si uno de mis campos de busqueda es vacio, por ejemplo, no pongo nada en el nombre y si pongo en el handicap, me devuelve true
-	//al devolver true continua la busqueda mirando otro atributo
-	//todo esto se deberÃ­a observar en los metodos desarrollados en la clase Participante del proyecto dominio
+	def cumpleCon(int handicapInicial,int handicap) {
+		if(handicapInicial==0){return true}
+		else{handicap>=handicapInicial}
+	}
+	
+	
+	def tieneElNombre(String string,String nombre) {
+		if(string==null){return true}
+		else{ 
+			nombre.toString().toLowerCase().contains(string.toString().toLowerCase())
+		}
+	}
+	
+	def tieneElApodo(String apo,String apodo) {
+		if(apo==null){return true}
+		else{ 
+			apodo.toString().toLowerCase().contains(apo.toString().toLowerCase())
+	}
+	}
+	
+	def fechaAnteriorA(Date date,Date fechaNacimiento) {
+		//if(fechaNacimiento!=null&&date!=null){fechaNacimiento.before(date)}
+		//else{throw new UserException("Debe Ingresar fecha")}
+		//PROBLEMAS ACA
+		true
+	}
+	
+	def suHandicapEsMenorA(int handicapMayor,int handicap) {
+		if (handicapMayor==0){return true}
+		else{handicap<=handicapMayor}
+	}
+	
+	
+	def cumpleInfracciones(boolean tieneInfraccion,boolean noTieneInfraccion,List<Infraccion> infracciones){
+		if (tieneInfraccion && noTieneInfraccion==false){infracciones.size!=0}
+		else{if (tieneInfraccion==false && noTieneInfraccion){infracciones.size==0}
+			else{true}
+			}
+			
+			}
+			
+		def tienePromedioMenorA(long promedioMayor,long promedio){
+			if(promedioMayor==0){return true}
+			else
+			{promedio<promedioMayor}
+	}
+	
+	def tienePromedioMayorA(long promedioMenor,long promedio){
+		if(promedioMenor==0){return true}
+			else{promedio>promedioMenor}
+	}
+	
 	
 }
+	
+
 

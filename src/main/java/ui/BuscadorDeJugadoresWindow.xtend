@@ -1,7 +1,6 @@
 package ui
 
 import domain.Participante
-import java.awt.Color
 import org.uqbar.arena.layout.ColumnLayout
 import org.uqbar.arena.widgets.Button
 import org.uqbar.arena.widgets.CheckBox
@@ -15,15 +14,12 @@ import org.uqbar.arena.windows.WindowOwner
 import applicationModel.BuscardorDeJugadoresApplicationModel
 
 class BuscadorDeJugadoresWindow extends SimpleWindow<BuscardorDeJugadoresApplicationModel> {
-	
+
 	new(WindowOwner parent, BuscardorDeJugadoresApplicationModel model) {
 		super(parent, model)
-		// se dispara la busqueda aca, aunque esto habria que revisarlo, 
-		//es una posibilidad segun el tutorial de arena que la busqueda se dispare aca
 		modelObject.search()
 	}
-	
-	
+
 	override def createMainTemplate(Panel mainPanel) {
 		title = "Buscador de Jugadores"
 		taskDescription = "Ingrese la  busqueda"
@@ -32,15 +28,13 @@ class BuscadorDeJugadoresWindow extends SimpleWindow<BuscardorDeJugadoresApplica
 
 		this.createResultsGrid(mainPanel)
 	}
-	
+
 	override protected createFormPanel(Panel mainPanel) {
-		
-		// panel de busqueda que permite buscar por nombre y apodo por ahora 
-		
+
 		var searchFormPanel = new Panel(mainPanel)
 		searchFormPanel.setLayout(new ColumnLayout(2))
-		
-        var labelNombre = new Label(searchFormPanel)
+
+		var labelNombre = new Label(searchFormPanel)
 		labelNombre.text = "Nombre Del Jugador"
 
 		new TextBox(searchFormPanel).bindValueToProperty("nombre")
@@ -49,58 +43,45 @@ class BuscadorDeJugadoresWindow extends SimpleWindow<BuscardorDeJugadoresApplica
 		labelApodo.text = "Apodo"
 
 		new TextBox(searchFormPanel).bindValueToProperty("apodo")
-		
-       // var labelFecha = new Label(searchFormPanel)
-		//labelFecha.text = "fecha de nacimiento anterior a : "
 
+		// var labelFecha = new Label(searchFormPanel)
+		//labelFecha.text = "fecha de nacimiento anterior a : "
 		//new TextBox(searchFormPanel).bindValueToProperty("fechaNacimientoAnterior")
-		
-        var labelHandicapInicial = new Label(searchFormPanel)
+		var labelHandicapInicial = new Label(searchFormPanel)
 		labelHandicapInicial.text = "handicap desde : "
 
 		new TextBox(searchFormPanel).bindValueToProperty("handicapInicial")
-		
+
 		var labelHandicapFinal = new Label(searchFormPanel)
 		labelHandicapFinal.text = "handicap hasta : "
 
 		new TextBox(searchFormPanel).bindValueToProperty("handicapFinal")
-		
-		 var labelPromedioInicial = new Label(searchFormPanel)
+
+		var labelPromedioInicial = new Label(searchFormPanel)
 		labelPromedioInicial.text = "promedio desde : "
 
 		new TextBox(searchFormPanel).bindValueToProperty("promedioDesde")
-		
+
 		var labelPromedioFinal = new Label(searchFormPanel)
 		labelPromedioFinal.text = "promedio hasta : "
 
 		new TextBox(searchFormPanel).bindValueToProperty("promedioHasta")
-		
+
 		new Label(searchFormPanel).setText("tiene infraccion")
 		new CheckBox(searchFormPanel).bindValueToProperty("tieneInfraccion")
-		
+
 		new Label(searchFormPanel).setText("no tiene infraccion")
 		new CheckBox(searchFormPanel).bindValueToProperty("noTieneInfraccion")
-		
-		
-		
-		}
-	
-	override protected addActions(Panel actionsPanel) {
-		new Button(actionsPanel)
-			.setCaption("Buscar")
-			.onClick [ | modelObject.search ] 
-			.setAsDefault
-			.disableOnError
 
-		new Button(actionsPanel) //
-			.setCaption("Limpiar")
-			.onClick [ | modelObject.clear ]
-		
 	}
-	
-	
-	//creacion y contenido de la tabla
-	
+
+	override protected addActions(Panel actionsPanel) {
+		new Button(actionsPanel).setCaption("Buscar").onClick[|modelObject.search].setAsDefault.disableOnError
+
+		new Button(actionsPanel).setCaption("Limpiar").onClick[|modelObject.clear]
+
+	}
+
 	def protected createResultsGrid(Panel mainPanel) {
 		var table = new Table<Participante>(mainPanel, typeof(Participante))
 		table.heigth = 250
@@ -110,28 +91,18 @@ class BuscadorDeJugadoresWindow extends SimpleWindow<BuscardorDeJugadoresApplica
 
 	}
 
-	
 	def void describeResultsGrid(Table<Participante> table) {
-		new Column<Participante>(table) //
-			.setTitle("Nombre")
-			.setFixedSize(150)
-			.bindContentsToProperty("nombre")
+		new Column<Participante>(table).setTitle("Nombre").setFixedSize(150).bindContentsToProperty("nombre")
 
-		var columnaHandicap = new Column<Participante>(table) //
-			columnaHandicap.setTitle("handicap")
-			columnaHandicap.setFixedSize(100)
-			columnaHandicap.bindContentsToProperty("handicap")
-			columnaHandicap.foreground = Color::BLUE
+		var columnaHandicap = new Column<Participante>(table)
+		columnaHandicap.setTitle("handicap")
+		columnaHandicap.setFixedSize(100)
+		columnaHandicap.bindContentsToProperty("handicap")
 
-		new Column<Participante>(table)
-			.setTitle("apodo")
-			.setFixedSize(150)
-			.bindContentsToProperty("apodo")
+		new Column<Participante>(table).setTitle("apodo").setFixedSize(150).bindContentsToProperty("apodo")
 
-new Column<Participante>(table)
-			.setTitle("fechaNacimiento")
-			.setFixedSize(150)
-			.bindContentsToProperty("fechaNacimiento")
+		new Column<Participante>(table).setTitle("fechaNacimiento").setFixedSize(150).
+			bindContentsToProperty("fechaNacimiento")
 
 	}
 }
