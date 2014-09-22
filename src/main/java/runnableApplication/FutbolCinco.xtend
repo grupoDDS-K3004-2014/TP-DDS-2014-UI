@@ -4,6 +4,9 @@ import org.uqbar.arena.Application
 import org.uqbar.arena.windows.Window
 import org.uqbar.commons.utils.ApplicationContext
 import domain.Participante
+import applicationModel.BuscardorDeJugadores
+import ui.BuscadorDeJugadoresWindow
+import ui.HomeJugadores
 
 class FutbolCinco extends Application {
 	

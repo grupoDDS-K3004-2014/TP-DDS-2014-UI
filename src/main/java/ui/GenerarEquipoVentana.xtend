@@ -8,6 +8,7 @@ import org.uqbar.arena.widgets.Button
 import org.uqbar.arena.widgets.CheckBox
 import org.uqbar.arena.widgets.Label
 import org.uqbar.arena.widgets.Panel
+import org.uqbar.arena.widgets.Selector
 import org.uqbar.arena.widgets.TextBox
 import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.tables.Table
@@ -24,7 +25,7 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 	}
 
 	override protected createFormPanel(Panel mainPanel) {
-
+		
 		title = "Generar equipos"
 
 		new Label(mainPanel).setText(modelObject.modeloPartido.nombreDelPartido).setFontSize(15)
@@ -39,7 +40,7 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 		tablaParticipantes.bindItemsToProperty("modeloPartido.participantes")
 		new Column<Participante>(tablaParticipantes).setTitle("Nombre").bindContentsToProperty("nombre").
 			setFixedSize(120)
-		new Label(panelTablas)
+		
 		new Label(panelTablas).setText("Ordenamiento Tentativo")
 		var tablaParticipantesOrdenTentativo = new Table<Participante>(panelTablas, typeof(Participante))
 		tablaParticipantesOrdenTentativo.setHeigth(120)
@@ -65,19 +66,32 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 		new Button(panelCriterios).setCaption("Ordenar jugadores").onClick([|modelObject.ordenarJugadores])
 		new Label(panelCriterios)
 		new Label(panelCriterios)
-		new Button(panelCriterios).setCaption("Generar equipos").onClick([|modelObject.generarEquipos])
+		
 		
 		panelCriteriosCheckbox = new Panel(panelCriterios)
 		panelCriteriosCheckbox.setLayout(new ColumnLayout(3))
-		new Label(panelCriteriosCheckbox).setText("Par/Impar")
-		new Label(panelCriteriosCheckbox)
-		new CheckBox(panelCriteriosCheckbox).bindValueToProperty("paridadValidator")
-		new Label(panelCriteriosCheckbox).setText("Ultimo partido")
-		new Label(panelCriteriosCheckbox)
-		new CheckBox(panelCriteriosCheckbox).bindValueToProperty("criterioUltimoPartidoValidator")
-		new Label(panelCriteriosCheckbox).setText("Ultimos N partido")
-		new TextBox(panelCriteriosCheckbox).bindValueToProperty("cantidadPartidos")
-		new CheckBox(panelCriteriosCheckbox).bindValueToProperty("criterioUltimosNPartidosValidator")
+		new Label(panelCriteriosCheckbox).setText("Por paridad para EquipoA")
+		new CheckBox(panelCriteriosCheckbox).bindValueToProperty("parImparValidator")
+		var selectorParImpar = new Selector(panelCriteriosCheckbox)
+		selectorParImpar.bindItemsToProperty("selectorOpcion")	
+		selectorParImpar.bindValueToProperty("opcionSeleccionada")	
+		selectorParImpar.bindVisibleToProperty("parImparValidator")
+		
+		panelCriteriosCheckbox = new Panel(panelCriterios)
+		panelCriteriosCheckbox.setLayout(new ColumnLayout(3))
+		new Label(panelCriteriosCheckbox).setText("Posicion personalizada EquipoA")
+		new CheckBox(panelCriteriosCheckbox).bindValueToProperty("posicionCustom")
+		var arrayCustom = new TextBox(panelCriteriosCheckbox)
+		arrayCustom.bindEnabledToProperty("posicionCustom")
+		arrayCustom.bindValueToProperty("arrayCustom")
+		
+		new Button(panelCriterios).setCaption("Generar equipos").onClick([|modelObject.generarEquipos])
+		
+		
+		
+		
+		
+		
 
 		var panelEquiposParaConfirmar = new Panel(mainPanel)
 		panelEquiposParaConfirmar.setLayout(new ColumnLayout(2))
@@ -85,14 +99,14 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 		var panelTabla = new Panel(panelEquiposParaConfirmar)
 		new Label(panelTabla).setText("EquipoA")
 		var tablaEquipoA = new Table<Participante>(panelTabla, typeof(Participante))
-		tablaParticipantes.bindItemsToProperty("modeloPartido.equipoA")
+		tablaEquipoA.bindItemsToProperty("modeloPartido.equipoA")
 		new Column<Participante>(tablaEquipoA).setTitle("Nombre").bindContentsToProperty("nombre").setFixedSize(120)
 
 		panelTabla = new Panel(panelEquiposParaConfirmar)
 
 		new Label(panelTabla).setText("EquipoB")
 		var tablaEquipoB = new Table<Participante>(panelTabla, typeof(Participante))
-		tablaParticipantes.bindItemsToProperty("modeloPartido.participantes")
+		tablaEquipoB.bindItemsToProperty("modeloPartido.equipoA")
 		new Column<Participante>(tablaEquipoB).setTitle("Nombre").bindContentsToProperty("nombre").setFixedSize(120)
 
 	}

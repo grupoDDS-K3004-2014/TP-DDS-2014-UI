@@ -43,6 +43,29 @@ class OTFApplicationModel extends Entity {
 		participante.setHandicap(1)
 		partidoNuevo.suscribir(participante)
 		
+		participante = new Estandar
+		participante.setNombre("Rogelio")
+		participante.setHandicap(10)
+		partidoNuevo.suscribir(participante)
+		participante = new Estandar
+		participante.setNombre("Pepeto")
+		participante.setHandicap(20)
+		partidoNuevo.suscribir(participante)
+		participante = new Estandar
+		participante.setNombre("Walflavio")
+		participante.setHandicap(30)
+		partidoNuevo.suscribir(participante)
+		participante = new Estandar
+		participante.setNombre("Esteban")
+		participante.setHandicap(5)
+		partidoNuevo.suscribir(participante)
+		participante = new Estandar
+		participante.setNombre("Sebastian")
+		participante.setHandicap(1)
+		partidoNuevo.suscribir(participante)
+		
+		
+		
 
 		var partidoNuevo2 = new Partido
 		

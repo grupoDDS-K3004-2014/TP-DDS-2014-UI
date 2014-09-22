@@ -1,4 +1,4 @@
-package runnableApplication
+package ui
 
 import org.uqbar.arena.windows.SimpleWindow
 import org.uqbar.arena.windows.WindowOwner
@@ -11,6 +11,7 @@ import domain.Participante
 import org.uqbar.arena.widgets.tables.Table
 import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.Button
+import applicationModel.BuscardorDeJugadores
 
 class BuscadorDeJugadoresWindow extends SimpleWindow<BuscardorDeJugadores> {
 	

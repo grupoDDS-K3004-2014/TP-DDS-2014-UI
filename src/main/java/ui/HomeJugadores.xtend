@@ -1,4 +1,4 @@
-package runnableApplication
+package ui
 
 import org.uqbar.commons.model.CollectionBasedHome
 import domain.Participante

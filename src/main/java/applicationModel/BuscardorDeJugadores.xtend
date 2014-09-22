@@ -1,4 +1,4 @@
-package runnableApplication
+package applicationModel
 
 import java.io.Serializable
 import org.uqbar.commons.utils.Observable
@@ -10,6 +10,7 @@ import domain.Participante
 import java.util.List
 import java.util.ArrayList
 import org.uqbar.commons.utils.ApplicationContext
+import ui.HomeJugadores
 
 @Observable
 
