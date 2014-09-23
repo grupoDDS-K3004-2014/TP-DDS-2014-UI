@@ -27,16 +27,18 @@ class GenerarEquiposApplicationModel extends Entity {
 	@Property ArrayList<String> selectorOpcion = new ArrayList
 	@Property String opcionSeleccionada = "Par"
 	@Property boolean posicionCustom = false
-	@Property Participante jugadorSeleccionado	
+	@Property Participante jugadorSeleccionado
 	@Property String primerJugador = "1"
-	@Property String segundoJugador ="1"
-	@Property String tercerJugador="1"
-	@Property String cuartoJugador="1"
-	@Property String quintoJugador="1"
+	@Property String segundoJugador = "1"
+	@Property String tercerJugador = "1"
+	@Property String cuartoJugador = "1"
+	@Property String quintoJugador = "1"
 	@Property ArrayList<String> listaDePosiciones = new ArrayList<String>
+	
+	
 
 	new(Partido partido) {
-		modeloPartido = partido
+		modeloPartido = partido		
 		this.init
 	}
 
@@ -59,6 +61,10 @@ class GenerarEquiposApplicationModel extends Entity {
 	def copiarValoresDe(Partido partido) {
 		modeloPartido.copiarValoresDe(partido)
 	}
+
+
+	
+	
 
 	def ordenarJugadores() {
 		validateNPartidos
@@ -110,19 +116,19 @@ class GenerarEquiposApplicationModel extends Entity {
 				sistema.generarEquiposTentativos(modeloPartido, new ArrayList<Integer>(Arrays.asList(2, 4, 6, 8, 10)))
 				sistema.confirmarEquipos(modeloPartido)
 			}
-		} 
+		}
 
 	}
-	
+
 	def validarSeleccion() {
 		if(noHaySeleccion) throw new UserException("Seleccione un criterio de selección")
 		validarUnicidadSeleccion
 	}
-	
+
 	def boolean noHaySeleccion() {
 		!(parImparValidator || posicionCustom)
 	}
-	
+
 	def ArrayList<Integer> parseInputArray() {
 		var arrayPosiciones = new ArrayList<Integer>
 		arrayPosiciones.add(toInt(primerJugador))
@@ -149,12 +155,16 @@ class GenerarEquiposApplicationModel extends Entity {
 
 	def validarRepeticion() {
 		var array = parseInputArray
-		if((array.toSet.size )!= 5 ) throw new UserException("Hay posiciones repetidas, por favor arréglelas")
+		if((array.toSet.size ) != 5) throw new UserException("Hay posiciones repetidas, por favor arréglelas")
 	}
 
 	def validarUnicidadSeleccion() {
 		if(posicionCustom && parImparValidator) throw new UserException("Marque unicamente un criterio de selección")
 
+	}
+	
+	def validarJugadorSeleccionado() {
+		if(jugadorSeleccionado == null) throw new UserException("No se seleccionó a ningún jugador")
 	}
 
 }

@@ -3,7 +3,9 @@ package ui
 import applicationModel.GenerarEquiposApplicationModel
 import domain.Participante
 import domain.Partido
+import java.util.ArrayList
 import org.uqbar.arena.layout.ColumnLayout
+import org.uqbar.arena.layout.VerticalLayout
 import org.uqbar.arena.widgets.Button
 import org.uqbar.arena.widgets.CheckBox
 import org.uqbar.arena.widgets.Label
@@ -14,8 +16,6 @@ import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.tables.Table
 import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.windows.WindowOwner
-import org.uqbar.arena.layout.VerticalLayout
-import java.util.ArrayList
 
 class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 
@@ -36,7 +36,7 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 		var panelAuxiliarHorizontal = new Panel(mainPanel)
 		panelAuxiliarHorizontal.setLayout(new ColumnLayout(2))
 		armarTablaEquipos("Jugadores anotados", "modeloPartido.participantes",
-			new Panel(panelAuxiliarHorizontal).setWidth(100),200)
+			new Panel(panelAuxiliarHorizontal).setWidth(100), 200)
 		armarBotoneraOrdenamiento(new Panel(panelAuxiliarHorizontal).setWidth(100))
 
 		//Segundo panel
@@ -44,15 +44,15 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 		panelAuxiliarHorizontal.setLayout(new ColumnLayout(2))
 
 		armarTablaEquipos("Orden tentativo", "modeloPartido.jugadoresOrdenados",
-			new Panel(panelAuxiliarHorizontal).setWidth(100),200)
+			new Panel(panelAuxiliarHorizontal).setWidth(100), 200)
 		armarBotoneraSeleccion(new Panel(panelAuxiliarHorizontal).setWidth(100))
 
 		//Tercer panel
 		panelAuxiliarHorizontal = new Panel(mainPanel)
 		panelAuxiliarHorizontal.setLayout(new ColumnLayout(2))
 
-		armarTablaEquipos("Equipo A", "modeloPartido.equipoA", new Panel(panelAuxiliarHorizontal).setWidth(100),110)
-		armarTablaEquipos("Equipo B", "modeloPartido.equipoB", new Panel(panelAuxiliarHorizontal).setWidth(100),110)
+		armarTablaEquipos2("Equipo A", "modeloPartido.equipoA", new Panel(panelAuxiliarHorizontal).setWidth(100), 110)
+		armarTablaEquipos2("Equipo B", "modeloPartido.equipoB", new Panel(panelAuxiliarHorizontal).setWidth(100), 110)
 
 	}
 
@@ -68,39 +68,39 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 		new Label(panelTexto).setText("Criterios de seleccion")
 		new Label(panelcheckBoxes).setText("Por paridad para EquipoA")
 		new CheckBox(panelcheckBoxes).bindValueToProperty("parImparValidator")
-		
+
 		var selectorParImpar = new Selector(panelcheckBoxes)
 		selectorParImpar.bindItemsToProperty("selectorOpcion")
 		selectorParImpar.bindValueToProperty("opcionSeleccionada")
 		selectorParImpar.bindVisibleToProperty("parImparValidator")
 		new Label(panelcheckBoxes).setText("Posicion personalizada EquipoA")
 		new CheckBox(panelcheckBoxes).bindValueToProperty("posicionCustom")
-		
-			var selectorInput = new Selector(panelInput)
+
+		var selectorInput = new Selector(panelInput)
 		selectorInput.bindItemsToProperty("listaDePosiciones")
 		selectorInput.bindValueToProperty("primerJugador")
 		selectorInput.bindVisibleToProperty("posicionCustom")
-		
+
 		selectorInput = new Selector(panelInput)
 		selectorInput.bindItemsToProperty("listaDePosiciones")
 		selectorInput.bindValueToProperty("segundoJugador")
 		selectorInput.bindVisibleToProperty("posicionCustom")
-		
+
 		selectorInput = new Selector(panelInput)
 		selectorInput.bindItemsToProperty("listaDePosiciones")
 		selectorInput.bindValueToProperty("tercerJugador")
 		selectorInput.bindVisibleToProperty("posicionCustom")
-		
+
 		selectorInput = new Selector(panelInput)
 		selectorInput.bindItemsToProperty("listaDePosiciones")
 		selectorInput.bindValueToProperty("cuartoJugador")
 		selectorInput.bindVisibleToProperty("posicionCustom")
-		
+
 		selectorInput = new Selector(panelInput)
 		selectorInput.bindItemsToProperty("listaDePosiciones")
 		selectorInput.bindValueToProperty("quintoJugador")
 		selectorInput.bindVisibleToProperty("posicionCustom")
-		
+
 		new Button(panelBoton).setCaption("Generar equipos").onClick([|modelObject.generarEquipos])
 
 	}
@@ -132,9 +132,18 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 		new Label(panelArmado).setText(tituloTabla)
 		var tablaParticipantes = new Table<Participante>(panelArmado, typeof(Participante))
 		tablaParticipantes.bindItemsToProperty(bindeableProperty)
-		tablaParticipantes.setHeigth(height)		
+		tablaParticipantes.setHeigth(height)
 		new Column<Participante>(tablaParticipantes).setTitle("Nombre").bindContentsToProperty("nombre")
-		
+
+	}
+
+	def armarTablaEquipos2(String tituloTabla, String bindeableProperty, Panel panelArmado, int height) {
+		new Label(panelArmado).setText(tituloTabla)
+		var tablaParticipantes = new Table<Participante>(panelArmado, typeof(Participante))
+		tablaParticipantes.bindItemsToProperty(bindeableProperty)
+		tablaParticipantes.bindValueToProperty("jugadorSeleccionado")
+		tablaParticipantes.setHeigth(height)
+		new Column<Participante>(tablaParticipantes).setTitle("Nombre").bindContentsToProperty("nombre")
 	}
 
 	override protected void addActions(Panel actions) {
@@ -145,10 +154,12 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 			modelObject.modeloPartido.jugadoresOrdenados = new ArrayList<Participante>
 			this.cancel
 		]
+		new Button(actions).setCaption("Inspeccionar jugador").onClick[|this.mostrarJugador].setAsDefault.disableOnError
 	}
 
 	def void mostrarJugador() {
 
+		modelObject.validarJugadorSeleccionado
 		this.openDialog(new VentanaJugador(this, modelObject.jugadorSeleccionado))
 	}
 
