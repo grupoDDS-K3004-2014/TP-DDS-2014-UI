@@ -53,9 +53,10 @@ class VentanaPrincipal extends SimpleWindow<OTFApplicationModel> {
 			bindContentsToTransformer([partido|(partido.cantidadInscriptos).toString]).setFixedSize(120)
 
 		new Column<Partido>(tablaPartidos).setTitle("Equipo ya armado").
-			bindContentsToTransformer([partido|if(partido.noOrganizado) "No" else "Si"]).setFixedSize(120)
+			bindContentsToTransformer([partido|if(partido.equipoA.size != 5) "No" else "Si"]).setFixedSize(120)
 
-		new Column<Partido>(tablaPartidos).setTitle("Confirmado").bindContentsToProperty("confirmado").setFixedSize(80)
+		new Column<Partido>(tablaPartidos).setTitle("Confirmado").bindContentsToTransformer([partido|partido.confirmado]).
+			setFixedSize(80)
 
 		var generarEquipos = new Button(panelBotonesPartidos).setCaption("Generar Equipos").onClick([|generarEquipos])
 		var confirmarEquipos = new Button(panelBotonesPartidos).setCaption("Confirmar/Desconfirmar partido").
@@ -70,14 +71,15 @@ class VentanaPrincipal extends SimpleWindow<OTFApplicationModel> {
 
 	def confirmarPartido() {
 
-		modelObject.validarConfirmacionPartido()
+		modelObject.confirmarPartido()
 
 	}
 
 	def generarEquipos() {
 		modelObject.validateGenerarEquipos
+		var aux = modelObject.partidoSeleccionado
 		this.openDialog(new GenerarEquipoVentana(this, modelObject.partidoSeleccionado))
-
+		modelObject.partidoSeleccionado = aux
 	}
 
 	def openDialog(Dialog<?> dialog) {

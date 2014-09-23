@@ -136,6 +136,10 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 		new Column<Participante>(tablaParticipantes).setTitle("Nombre").bindContentsToProperty("nombre")
 
 	}
+	
+	def tieneHandicapAlto(Participante participante) {
+		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	}
 
 	def armarTablaEquipos2(String tituloTabla, String bindeableProperty, Panel panelArmado, int height) {
 		new Label(panelArmado).setText(tituloTabla)

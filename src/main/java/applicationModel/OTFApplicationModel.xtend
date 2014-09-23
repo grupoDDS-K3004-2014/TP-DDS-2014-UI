@@ -103,11 +103,7 @@ class OTFApplicationModel extends Entity {
 		partidos.add(partidoNuevo3.setValores(2, Dia.Lunes, 1820, 14111993, "Los pibes de Accenture"))
 
 	}
-
-	def validarConfirmacionPartido() {
-		partidos.findFirst[partido|partido == partidoSeleccionado].confirmarPartido
-
-	}
+	
 
 	def refresh() {
 		var partidosAux = partidos
@@ -148,6 +144,25 @@ class OTFApplicationModel extends Entity {
 
 	def String fixTimeFormat(int horario) {
 		return ((horario / 100).toString) + ":" + ((horario % 100).toString)
+	}
+	
+	def confirmarPartido() {
+		validarConfirmacionPartido
+		if(partidoSeleccionado.confirmado == "Si") partidoSeleccionado.confirmado="No"
+		else partidoSeleccionado.confirmado="Si"
+		refreshPartidos
+	}
+	
+	def refreshPartidos() {
+		var a = partidos
+		var b = partidoSeleccionado
+		partidos = new ArrayList
+		partidos = a
+		partidoSeleccionado = b
+	}
+	
+	def validarConfirmacionPartido() {
+		if (partidoSeleccionado.equipoA.size != 5) throw new UserException("El equipo no está organizado")
 	}
 
 }
