@@ -34,11 +34,9 @@ class GenerarEquiposApplicationModel extends Entity {
 	@Property String cuartoJugador = "1"
 	@Property String quintoJugador = "1"
 	@Property ArrayList<String> listaDePosiciones = new ArrayList<String>
-	
-	
 
 	new(Partido partido) {
-		modeloPartido = partido		
+		modeloPartido = partido
 		this.init
 	}
 
@@ -61,10 +59,6 @@ class GenerarEquiposApplicationModel extends Entity {
 	def copiarValoresDe(Partido partido) {
 		modeloPartido.copiarValoresDe(partido)
 	}
-
-
-	
-	
 
 	def ordenarJugadores() {
 		validateNPartidos
@@ -162,7 +156,7 @@ class GenerarEquiposApplicationModel extends Entity {
 		if(posicionCustom && parImparValidator) throw new UserException("Marque unicamente un criterio de selección")
 
 	}
-	
+
 	def validarJugadorSeleccionado() {
 		if(jugadorSeleccionado == null) throw new UserException("No se seleccionó a ningún jugador")
 	}

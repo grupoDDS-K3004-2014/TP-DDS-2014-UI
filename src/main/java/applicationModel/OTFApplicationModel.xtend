@@ -129,8 +129,8 @@ class OTFApplicationModel extends Entity {
 	}
 
 	def validateGenerarEquipos() {
-		if(partidoSeleccionado.cantidadInscriptos != 10) throw new UserException(
-			"El equipo no tiene la cantidad suficiente de jugadores como para ser ordenado")
+		if (partidoSeleccionado.cantidadInscriptos != 10)
+			throw new UserException("El equipo no tiene la cantidad suficiente de jugadores como para ser ordenado")
 	}
 
 	def String fixDiaFormat(Dia dia) {

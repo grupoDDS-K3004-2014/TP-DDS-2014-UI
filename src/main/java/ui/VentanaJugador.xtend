@@ -9,13 +9,13 @@ import domain.Participante
 import org.uqbar.arena.layout.ColumnLayout
 
 class VentanaJugador extends Dialog<Participante> {
-	
+
 	new(WindowOwner parent, Participante model) {
 		super(parent, model)
 
-		}
-		
-		override protected createFormPanel(Panel mainPanel) {
+	}
+
+	override protected createFormPanel(Panel mainPanel) {
 		title = "Datos Jugador"
 		val panelJugador = new Panel(mainPanel)
 		panelJugador.setLayout(new ColumnLayout(2))
@@ -26,7 +26,5 @@ class VentanaJugador extends Dialog<Participante> {
 		new Label(panelJugador).setText("Apodo:")
 		new TextBox(panelJugador).setWidth(145).bindValueToProperty("apodo")
 	}
-		
-	
-	
+
 }
