@@ -7,6 +7,7 @@ import java.util.ArrayList
 import org.eclipse.xtend.lib.Property
 import org.uqbar.commons.model.Entity
 import org.uqbar.commons.utils.Observable
+import org.uqbar.commons.model.UserException
 
 @Observable
 class OTFApplicationModel extends Entity {
@@ -42,7 +43,7 @@ class OTFApplicationModel extends Entity {
 		participante.setNombre("Pablo")
 		participante.setHandicap(1)
 		partidoNuevo.suscribir(participante)
-		
+
 		participante = new Estandar
 		participante.setNombre("Rogelio")
 		participante.setHandicap(10)
@@ -63,12 +64,9 @@ class OTFApplicationModel extends Entity {
 		participante.setNombre("Sebastian")
 		participante.setHandicap(1)
 		partidoNuevo.suscribir(participante)
-		
-		
-		
 
 		var partidoNuevo2 = new Partido
-		
+
 		participante = new Estandar
 		participante.setNombre("Jose")
 		participante.setHandicap(10)
@@ -85,7 +83,7 @@ class OTFApplicationModel extends Entity {
 		participante.setNombre("Santiago")
 		participante.setHandicap(1)
 		partidoNuevo2.suscribir(participante)
-		
+
 		var partidoNuevo3 = new Partido
 		participante = new Estandar
 		participante.setNombre("Walberto")
@@ -101,7 +99,7 @@ class OTFApplicationModel extends Entity {
 		partidoNuevo3.suscribir(participante)
 
 		partidos.add(partidoNuevo.setValores(1, Dia.Lunes, 1830, 10122014, "El superClasico de Martelli"))
-		partidos.add(partidoNuevo2.setValores(1, Dia.Viernes, 2215, 11102014, "Don Torcuato Copa"))
+		partidos.add(partidoNuevo2.setValores(1, Dia.Miercoles, 2215, 11102014, "Don Torcuato Copa"))
 		partidos.add(partidoNuevo3.setValores(2, Dia.Lunes, 1820, 14111993, "Los pibes de Accenture"))
 
 	}
@@ -115,6 +113,41 @@ class OTFApplicationModel extends Entity {
 		var partidosAux = partidos
 		partidos = new ArrayList
 		partidos = partidosAux
+	}
+
+	def validarEquipoListoParaOrganizar() {
+		partidoSeleccionado.cantidadInscriptos != 10
+
+	}
+
+	def boolean getEquipoListoParaOrganizar() {
+		validarEquipoListoParaOrganizar
+	}
+
+	def String fixDateFormat(int fecha) {
+		((fecha / 1000000).toString) + "/" + (((fecha) / 10000) % 100).toString + "/" + (fecha % 10000).toString
+	}
+
+	def validateGenerarEquipos() {
+		if(partidoSeleccionado.cantidadInscriptos != 10) throw new UserException(
+			"El equipo no tiene la cantidad suficiente de jugadores como para ser ordenado")
+	}
+
+	def String fixDiaFormat(Dia dia) {
+		switch (dia) {
+			case Dia.Lunes: "Lunes"
+			case Dia.Martes: "Martes"
+			case Dia.Miercoles: "Miercoles"
+			case Dia.Jueves: "Jueves"
+			case Dia.Viernes: "Viernes"
+			case Dia.Sabado: "Sabado"
+			case Dia.Domingo: "Domingo"
+		}
+
+	}
+
+	def String fixTimeFormat(int horario) {
+		return ((horario / 100).toString) + ":" + ((horario % 100).toString)
 	}
 
 }

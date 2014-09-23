@@ -4,14 +4,14 @@ import domain.CriterioCompuesto
 import domain.CriterioHandicap
 import domain.CriterioNCalificaciones
 import domain.CriterioUltimoPartido
+import domain.Participante
 import domain.Partido
 import domain.Sistema
 import java.util.ArrayList
+import java.util.Arrays
 import org.uqbar.commons.model.Entity
 import org.uqbar.commons.model.UserException
 import org.uqbar.commons.utils.Observable
-import java.util.Arrays
-import domain.Participante
 
 @Observable
 class GenerarEquiposApplicationModel extends Entity {
@@ -27,8 +27,13 @@ class GenerarEquiposApplicationModel extends Entity {
 	@Property ArrayList<String> selectorOpcion = new ArrayList
 	@Property String opcionSeleccionada = "Par"
 	@Property boolean posicionCustom = false
-	@Property String arrayCustom = ""
-	@Property Participante jugadorSeleccionado
+	@Property Participante jugadorSeleccionado	
+	@Property String primerJugador = "1"
+	@Property String segundoJugador ="1"
+	@Property String tercerJugador="1"
+	@Property String cuartoJugador="1"
+	@Property String quintoJugador="1"
+	@Property ArrayList<String> listaDePosiciones = new ArrayList<String>
 
 	new(Partido partido) {
 		modeloPartido = partido
@@ -38,6 +43,16 @@ class GenerarEquiposApplicationModel extends Entity {
 	def init() {
 		selectorOpcion.add("Par")
 		selectorOpcion.add("Impar")
+		listaDePosiciones.add("1")
+		listaDePosiciones.add("2")
+		listaDePosiciones.add("3")
+		listaDePosiciones.add("4")
+		listaDePosiciones.add("5")
+		listaDePosiciones.add("6")
+		listaDePosiciones.add("7")
+		listaDePosiciones.add("8")
+		listaDePosiciones.add("9")
+		listaDePosiciones.add("10")
 
 	}
 
@@ -80,68 +95,61 @@ class GenerarEquiposApplicationModel extends Entity {
 	}
 
 	def generarEquipos() {
-		validarUnicidadSeleccion
+		validarSeleccion
 		validarOrdenPrevio
 		if (posicionCustom) {
-			validarTextbox
-			sistema.generarEquiposTentativos( modeloPartido, parseArrayPosicionesCustom)
+			validarInput
+			sistema.generarEquiposTentativos(modeloPartido, parseInputArray)
 			sistema.confirmarEquipos(modeloPartido)
 		}
 		if (parImparValidator) {
 			if (opcionSeleccionada == "Par") {
-				sistema.generarEquiposTentativos( modeloPartido, new ArrayList<Integer>(Arrays.asList(1,3,5,7,9)))
+				sistema.generarEquiposTentativos(modeloPartido, new ArrayList<Integer>(Arrays.asList(1, 3, 5, 7, 9)))
 				sistema.confirmarEquipos(modeloPartido)
 			} else {
-				sistema.generarEquiposTentativos( modeloPartido, new ArrayList<Integer>(Arrays.asList(0,2,4,6,8)))
+				sistema.generarEquiposTentativos(modeloPartido, new ArrayList<Integer>(Arrays.asList(2, 4, 6, 8, 10)))
 				sistema.confirmarEquipos(modeloPartido)
 			}
-		} else {
-			throw new UserException("No hay ningun criterio de selección marcado")
-		}
+		} 
 
 	}
 	
+	def validarSeleccion() {
+		if(noHaySeleccion) throw new UserException("Seleccione un criterio de selección")
+		validarUnicidadSeleccion
+	}
+	
+	def boolean noHaySeleccion() {
+		!(parImparValidator || posicionCustom)
+	}
+	
+	def ArrayList<Integer> parseInputArray() {
+		var arrayPosiciones = new ArrayList<Integer>
+		arrayPosiciones.add(toInt(primerJugador))
+		arrayPosiciones.add(toInt(segundoJugador))
+		arrayPosiciones.add(toInt(tercerJugador))
+		arrayPosiciones.add(toInt(cuartoJugador))
+		arrayPosiciones.add(toInt(quintoJugador))
+		return arrayPosiciones
+	}
+
 	def validarOrdenPrevio() {
-		if(modeloPartido.jugadoresOrdenados.empty){
+		if (modeloPartido.jugadoresOrdenados.empty) {
 			throw new UserException("No estan ordenados los jugadores")
 		}
 	}
 
-	def ArrayList<Integer> parseArrayPosicionesCustom() {
-		var arrayPosiciones = new ArrayList<Integer>
-		arrayPosiciones.add(toInt(arrayCustom.substring(0, 0)))
-		arrayPosiciones.add(toInt(arrayCustom.substring(2, 2)))
-		arrayPosiciones.add(toInt(arrayCustom.substring(4, 4)))
-		arrayPosiciones.add(toInt(arrayCustom.substring(6, 6)))
-		arrayPosiciones.add(toInt(arrayCustom.substring(8, 8)))
-		return arrayPosiciones
-	}
-
 	def Integer toInt(String numeroString) {
-		Integer.parseInt(numeroString) -1
+		Integer.parseInt(numeroString)
 	}
 
-	def validarUnicidadParImpar() {
-		throw new UnsupportedOperationException("TODO: auto-generated method stub")
+	def validarInput() {
+		validarRepeticion
 	}
 
-	def validarTextbox() {
-		validarLonguitudArray
-		validarFormato
-	}
-
-	def validarFormato() {
-		if ((arrayCustom.substring(1, 2) + arrayCustom.substring(3, 4) + arrayCustom.substring(5, 6) +
-			arrayCustom.substring(7, 8) ) == "----")
-			throw new UserException(
-				"Error en el formato. Por favor ingrese las posiciones como Pos1-...-Pos5. Recuerde que las posiciones van del 0 al 9")
-	}
-
-	def validarLonguitudArray() {
-		if (arrayCustom.length != 9) {
-			throw new UserException(
-				"Error en el formato. Por favor ingrese las posiciones como Pos1-...-Pos5. Recuerde que las posiciones van del 0 al 9")
-		}
+	def validarRepeticion() {
+		var array = parseInputArray
+		if((array.toSet.size )!= 5 ) throw new UserException("Hay posiciones repetidas, por favor arréglelas")
 	}
 
 	def validarUnicidadSeleccion() {

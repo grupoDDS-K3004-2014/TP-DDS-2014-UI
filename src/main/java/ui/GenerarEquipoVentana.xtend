@@ -15,6 +15,7 @@ import org.uqbar.arena.widgets.tables.Table
 import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.arena.layout.VerticalLayout
+import java.util.ArrayList
 
 class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 
@@ -31,112 +32,109 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 		mainPanel.setLayout(new VerticalLayout)
 		new Label(mainPanel).setText(modelObject.modeloPartido.nombreDelPartido).setFontSize(15)
 
-		var panelArriba = new Panel(mainPanel)
-		var panelAbajo = new Panel(mainPanel)
+		//Primer panel
+		var panelAuxiliarHorizontal = new Panel(mainPanel)
+		panelAuxiliarHorizontal.setLayout(new ColumnLayout(2))
+		armarTablaEquipos("Jugadores anotados", "modeloPartido.participantes",
+			new Panel(panelAuxiliarHorizontal).setWidth(100),200)
+		armarBotoneraOrdenamiento(new Panel(panelAuxiliarHorizontal).setWidth(100))
 
-		panelArriba.setLayout(new ColumnLayout(2))
-		panelAbajo.setLayout(new ColumnLayout(2))
+		//Segundo panel
+		panelAuxiliarHorizontal = new Panel(mainPanel)
+		panelAuxiliarHorizontal.setLayout(new ColumnLayout(2))
 
-		var panelTabla = new Panel(panelArriba)
-		var panelBotones = new Panel(panelArriba)
+		armarTablaEquipos("Orden tentativo", "modeloPartido.jugadoresOrdenados",
+			new Panel(panelAuxiliarHorizontal).setWidth(100),200)
+		armarBotoneraSeleccion(new Panel(panelAuxiliarHorizontal).setWidth(100))
 
-		//Creo tabla de participantes anotados
-		new Label(panelTabla).setText("Jugadores Anotados")
-		var tablaParticipantes = new Table<Participante>(panelTabla, typeof(Participante))
+		//Tercer panel
+		panelAuxiliarHorizontal = new Panel(mainPanel)
+		panelAuxiliarHorizontal.setLayout(new ColumnLayout(2))
 
-		tablaParticipantes.bindItemsToProperty("modeloPartido.participantes")
-		new Column<Participante>(tablaParticipantes).setTitle("Nombre").bindContentsToProperty("nombre")
+		armarTablaEquipos("Equipo A", "modeloPartido.equipoA", new Panel(panelAuxiliarHorizontal).setWidth(100),110)
+		armarTablaEquipos("Equipo B", "modeloPartido.equipoB", new Panel(panelAuxiliarHorizontal).setWidth(100),110)
 
-		panelTabla = new Panel(panelArriba)
+	}
 
-		//Tabla de participantes ya ordenados
-		new Label(panelTabla).setText("Ordenamiento Tentativo")
-		var tablaParticipantesOrdenTentativo = new Table<Participante>(panelTabla, typeof(Participante))
-		tablaParticipantesOrdenTentativo.setHeigth(200)
-		tablaParticipantesOrdenTentativo.bindItemsToProperty("modeloPartido.jugadoresOrdenados")
+	def armarBotoneraSeleccion(Panel panelArmado) {
 
-		new Column<Participante>(tablaParticipantesOrdenTentativo).setTitle("Nombre").bindContentsToProperty("nombre")
-
-
-		new Label(panelAbajo).setText("EquipoA")
-		new Label(panelAbajo).setText("EquipoB")
-		var tablaEquipoA = new Table<Participante>(panelAbajo, typeof(Participante))
-		tablaEquipoA.bindItemsToProperty("modeloPartido.equipoA")
-		new Column<Participante>(tablaEquipoA).setTitle("Nombre").bindContentsToProperty("nombre")
-
-		var tablaEquipoB = new Table<Participante>(panelAbajo, typeof(Participante))
-		tablaEquipoB.bindItemsToProperty("modeloPartido.equipoA")
-		new Column<Participante>(tablaEquipoB).setTitle("Nombre").bindContentsToProperty("nombre")
-
-		// Creo criterios de ordenamiento
-		var panelTexto = new Panel(panelBotones)
-		new Panel(panelBotones)
-		var panelInput = new Panel(panelBotones)
-		var panelBoton = new Panel(panelBotones)
-		panelInput.setLayout(new ColumnLayout(3))
-
-
-		new Label(panelTexto).setText("Criterios de ordenamiento")
-
-		new Label(panelInput).setText("Handicap")
-		new Label(panelInput)
-		new CheckBox(panelInput).bindValueToProperty("criterioHandicapValidator")
-
-		new Label(panelInput).setText("Ultimo partido")
-		new Label(panelInput)
-		new CheckBox(panelInput).bindValueToProperty("criterioUltimoPartidoValidator")
-
-		new Label(panelInput).setText("Ultimos N partido")
-		new TextBox(panelInput).bindValueToProperty("cantidadPartidos")
-		new CheckBox(panelInput).bindValueToProperty("criterioUltimosNPartidosValidator")
-
-		new Button(panelBoton).setCaption("Ordenar jugadores").onClick([|modelObject.ordenarJugadores])
-
-		new Panel(panelBotones)
-		new Panel(panelBotones)
-		new Panel(panelBotones)
-		new Panel(panelBotones)
-		new Panel(panelBotones)
-		new Panel(panelBotones)
-		new Panel(panelBotones)
-		new Panel(panelBotones)
-		new Panel(panelBotones)
-		new Panel(panelBotones)
-		new Panel(panelBotones)
-		new Panel(panelBotones)
-		new Panel(panelBotones)
-		new Panel(panelBotones)
-		new Panel(panelBotones)
-		new Panel(panelBotones)
-		new Panel(panelBotones)
-		new Panel(panelBotones)
-
-		
-		panelTexto = new Panel(panelBotones)
-		new Panel(panelBotones)
-		panelInput = new Panel(panelBotones)
-		panelBoton = new Panel(panelBotones)
-		panelInput.setLayout(new ColumnLayout(3))
+		var panelTexto = new Panel(panelArmado)
+		var panelcheckBoxes = new Panel(panelArmado)
+		var panelInput = new Panel(panelArmado)
+		var panelBoton = new Panel(panelArmado)
+		panelcheckBoxes.setLayout(new ColumnLayout(3))
+		panelInput.setLayout(new ColumnLayout((5)))
 
 		new Label(panelTexto).setText("Criterios de seleccion")
-
-	
-		new Label(panelInput).setText("Por paridad para EquipoA")
-		new CheckBox(panelInput).bindValueToProperty("parImparValidator")
-		var selectorParImpar = new Selector(panelInput)
+		new Label(panelcheckBoxes).setText("Por paridad para EquipoA")
+		new CheckBox(panelcheckBoxes).bindValueToProperty("parImparValidator")
+		
+		var selectorParImpar = new Selector(panelcheckBoxes)
 		selectorParImpar.bindItemsToProperty("selectorOpcion")
 		selectorParImpar.bindValueToProperty("opcionSeleccionada")
 		selectorParImpar.bindVisibleToProperty("parImparValidator")
+		new Label(panelcheckBoxes).setText("Posicion personalizada EquipoA")
+		new CheckBox(panelcheckBoxes).bindValueToProperty("posicionCustom")
+		
+			var selectorInput = new Selector(panelInput)
+		selectorInput.bindItemsToProperty("listaDePosiciones")
+		selectorInput.bindValueToProperty("primerJugador")
+		selectorInput.bindVisibleToProperty("posicionCustom")
+		
+		selectorInput = new Selector(panelInput)
+		selectorInput.bindItemsToProperty("listaDePosiciones")
+		selectorInput.bindValueToProperty("segundoJugador")
+		selectorInput.bindVisibleToProperty("posicionCustom")
+		
+		selectorInput = new Selector(panelInput)
+		selectorInput.bindItemsToProperty("listaDePosiciones")
+		selectorInput.bindValueToProperty("tercerJugador")
+		selectorInput.bindVisibleToProperty("posicionCustom")
+		
+		selectorInput = new Selector(panelInput)
+		selectorInput.bindItemsToProperty("listaDePosiciones")
+		selectorInput.bindValueToProperty("cuartoJugador")
+		selectorInput.bindVisibleToProperty("posicionCustom")
+		
+		selectorInput = new Selector(panelInput)
+		selectorInput.bindItemsToProperty("listaDePosiciones")
+		selectorInput.bindValueToProperty("quintoJugador")
+		selectorInput.bindVisibleToProperty("posicionCustom")
+		
+		new Button(panelBoton).setCaption("Generar equipos").onClick([|modelObject.generarEquipos])
 
-		new Label(panelInput).setText("Posicion personalizada EquipoA")
-		new CheckBox(panelInput).bindValueToProperty("posicionCustom")
-		var arrayCustom = new TextBox(panelInput)
-		arrayCustom.bindEnabledToProperty("posicionCustom")
-		arrayCustom.bindValueToProperty("arrayCustom")
+	}
 
-		new Button(panelBoton).setCaption("Generar equipos").onClick(
-			[|modelObject.generarEquipos])
+	def armarBotoneraOrdenamiento(Panel panelArmado) {
 
+		var panelTexto = new Panel(panelArmado)
+		var panelcheckBoxes = new Panel(panelArmado)
+		var panelBoton = new Panel(panelArmado)
+		panelcheckBoxes.setLayout(new ColumnLayout(3))
+
+		new Label(panelTexto).setText("Criterios de ordenamiento")
+		new Label(panelcheckBoxes).setText("Handicap")
+		new Label(panelcheckBoxes)
+		new CheckBox(panelcheckBoxes).bindValueToProperty("criterioHandicapValidator")
+		new Label(panelcheckBoxes).setText("Ultimo partido")
+		new Label(panelcheckBoxes)
+		new CheckBox(panelcheckBoxes).bindValueToProperty("criterioUltimoPartidoValidator")
+		new Label(panelcheckBoxes).setText("Ultimos N partido")
+		new TextBox(panelcheckBoxes).bindValueToProperty("cantidadPartidos")
+		new CheckBox(panelcheckBoxes).bindValueToProperty("criterioUltimosNPartidosValidator")
+		new Button(panelBoton).setCaption("Ordenar jugadores").onClick([|modelObject.ordenarJugadores])
+
+	}
+
+	def armarTablaEquipos(String tituloTabla, String bindeableProperty, Panel panelArmado, int height) {
+
+		//Creo la tabla
+		new Label(panelArmado).setText(tituloTabla)
+		var tablaParticipantes = new Table<Participante>(panelArmado, typeof(Participante))
+		tablaParticipantes.bindItemsToProperty(bindeableProperty)
+		tablaParticipantes.setHeigth(height)		
+		new Column<Participante>(tablaParticipantes).setTitle("Nombre").bindContentsToProperty("nombre")
+		
 	}
 
 	override protected void addActions(Panel actions) {
@@ -144,19 +142,18 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 
 		new Button(actions).setCaption("Cancelar").onClick [ |
 			modelObject.copiarValoresDe(partidoClon)
+			modelObject.modeloPartido.jugadoresOrdenados = new ArrayList<Participante>
 			this.cancel
 		]
 	}
-	
+
 	def void mostrarJugador() {
 
-		this.openDialog(new ventanaJugador(this, modelObject.jugadorSeleccionado))
+		this.openDialog(new VentanaJugador(this, modelObject.jugadorSeleccionado))
 	}
 
 	def openDialog(Dialog<?> dialog) {
 		dialog.open
 	}
-	
-	}
 
-
+}

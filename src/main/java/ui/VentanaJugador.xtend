@@ -8,7 +8,7 @@ import org.uqbar.arena.widgets.TextBox
 import domain.Participante
 import org.uqbar.arena.layout.ColumnLayout
 
-class ventanaJugador extends Dialog<Participante> {
+class VentanaJugador extends Dialog<Participante> {
 	
 	new(WindowOwner parent, Participante model) {
 		super(parent, model)

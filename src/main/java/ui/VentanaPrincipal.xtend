@@ -1,7 +1,6 @@
 package ui
 
 import applicationModel.OTFApplicationModel
-import domain.Dia
 import domain.Partido
 import org.uqbar.arena.bindings.NotNullObservable
 import org.uqbar.arena.layout.ColumnLayout
@@ -27,33 +26,35 @@ class VentanaPrincipal extends SimpleWindow<OTFApplicationModel> {
 	override protected createFormPanel(Panel mainPanel) {
 
 		title = "Organizador de partidos de Futbol 5"
-
 		val panelPartidos = new Panel(mainPanel)
 		panelPartidos.setLayout(new ColumnLayout(2))
-
 		val panelGrilla = new Panel(panelPartidos)
 		val panelBotonesPartidos = new Panel(panelPartidos)
-
 		new Label(panelGrilla).setText("Listado de Partidos").setFontSize(15)
-		var tablaPartidos = new Table<Partido>(panelGrilla, typeof(Partido))
 
+		var tablaPartidos = new Table<Partido>(panelGrilla, typeof(Partido))
 		tablaPartidos.bindItemsToProperty("partidos")
 		tablaPartidos.bindValueToProperty("partidoSeleccionado")
-
 		new Column<Partido>(tablaPartidos).setTitle("Nombre").bindContentsToProperty("nombreDelPartido").
 			setFixedSize(160)
+
 		new Column<Partido>(tablaPartidos).setTitle("Veces por mes").bindContentsToProperty("periodicidad").
 			setFixedSize(90)
+
 		new Column<Partido>(tablaPartidos).setTitle("Proxima fecha").bindContentsToTransformer(
-			[partido|fixDateFormat(partido.getFecha())]).setFixedSize(100)
+			[partido|modelObject.fixDateFormat(partido.getFecha())]).setFixedSize(100)
+
 		new Column<Partido>(tablaPartidos).setTitle("Horario").bindContentsToTransformer(
-			[partido|fixTimeFormat(partido.getHorario())]).setFixedSize(70)
+			[partido|modelObject.fixTimeFormat(partido.getHorario())]).setFixedSize(70)
+
 		new Column<Partido>(tablaPartidos).setTitle("Día").bindContentsToTransformer(
-			[partido|fixDiaFormat(partido.getDia)]).setFixedSize(80)
+			[partido|modelObject.fixDiaFormat(partido.getDia)]).setFixedSize(80)
 		new Column<Partido>(tablaPartidos).setTitle("Cantidad Inscriptos").
 			bindContentsToTransformer([partido|(partido.cantidadInscriptos).toString]).setFixedSize(120)
+
 		new Column<Partido>(tablaPartidos).setTitle("Equipo ya armado").
 			bindContentsToTransformer([partido|if(partido.noOrganizado) "No" else "Si"]).setFixedSize(120)
+
 		new Column<Partido>(tablaPartidos).setTitle("Confirmado").bindContentsToProperty("confirmado").setFixedSize(80)
 
 		var generarEquipos = new Button(panelBotonesPartidos).setCaption("Generar Equipos").onClick([|generarEquipos])
@@ -65,7 +66,6 @@ class VentanaPrincipal extends SimpleWindow<OTFApplicationModel> {
 		generarEquipos.bindEnabled(equipoSelec)
 		confirmarEquipos.bindEnabled(equipoSelec)
 
-	//val panelJugadores = new Panel(mainPanel)		
 	}
 
 	def confirmarPartido() {
@@ -75,7 +75,7 @@ class VentanaPrincipal extends SimpleWindow<OTFApplicationModel> {
 	}
 
 	def generarEquipos() {
-
+		modelObject.validateGenerarEquipos
 		this.openDialog(new GenerarEquipoVentana(this, modelObject.partidoSeleccionado))
 
 	}
@@ -83,27 +83,6 @@ class VentanaPrincipal extends SimpleWindow<OTFApplicationModel> {
 	def openDialog(Dialog<?> dialog) {
 		dialog.onAccept[|modelObject.refresh]
 		dialog.open
-	}
-
-	def String fixDateFormat(int fecha) {
-		((fecha / 1000000).toString) + "/" + (((fecha) / 10000) % 100).toString + "/" + (fecha % 10000).toString
-	}
-
-	def String fixDiaFormat(Dia dia) {
-		switch (dia) {
-			case Dia.Lunes: "Lunes"
-			case Dia.Martes: "Martes"
-			case Dia.Miercoles: "Miercoles"
-			case Dia.Jueves: "Jueves"
-			case Dia.Viernes: "Viernes"
-			case Dia.Sabado: "Sabado"
-			case Dia.Domingo: "Domingo"
-		}
-
-	}
-
-	def String fixTimeFormat(int horario) {
-		return ((horario / 100).toString) + ":" + ((horario % 100).toString)
 	}
 
 }
