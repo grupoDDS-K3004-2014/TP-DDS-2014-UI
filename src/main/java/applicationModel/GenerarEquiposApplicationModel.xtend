@@ -62,15 +62,34 @@ class GenerarEquiposApplicationModel extends Entity {
 
 	def ordenarJugadores() {
 		validateNPartidos
-		var criterioCompuesto = new CriterioCompuesto
+
+		/*var criterioCompuesto = new CriterioCompuesto
 		if(criterioHandicapValidator) criterioCompuesto.criterios.add(new CriterioHandicap)
 		if(criterioUltimoPartidoValidator) criterioCompuesto.criterios.add(new CriterioUltimoPartido)
 		if (criterioUltimosNPartidosValidator) {
 			var criterioNPartidos = new CriterioNCalificaciones
 			criterioNPartidos.setCantidadCalificaciones(cantidadPartidos)
 			criterioCompuesto.criterios.add(criterioNPartidos)
+		}*/
+		validateCriterio
+		if (criterioUltimoPartidoValidator) {
+			var arrayAux = new ArrayList
+			arrayAux = modeloPartido.participantes
+			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|jugador.calificaciones.head.nota]
 		}
-		validateCriterio(criterioCompuesto)
+		if (criterioHandicapValidator) {
+			var arrayAux = new ArrayList
+			arrayAux = modeloPartido.participantes
+			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|jugador.handicap]
+			modeloPartido.jugadoresOrdenados.reverse
+		}
+		if (criterioUltimosNPartidosValidator) {
+			var arrayAux = new ArrayList
+			arrayAux = modeloPartido.participantes
+			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|jugador.handicap]
+
+		}
+
 		refreshJugadoresOrdenados
 	}
 
@@ -81,12 +100,11 @@ class GenerarEquiposApplicationModel extends Entity {
 
 	}
 
-	def validateCriterio(CriterioCompuesto criterioCompuesto) {
-		if (!(criterioCompuesto.criterios.isEmpty))
-			sistema.organizarJugadoresPorCriterio(criterioCompuesto, modeloPartido)
-		else {
+	def validateCriterio() {
+		if (!(criterioHandicapValidator || criterioUltimoPartidoValidator || criterioUltimosNPartidosValidator)) {
 			throw new UserException("No seleccionó ningún criterio")
 		}
+
 	}
 
 	def validateNPartidos() {

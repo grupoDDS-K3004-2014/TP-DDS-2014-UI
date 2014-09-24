@@ -8,6 +8,7 @@ import org.eclipse.xtend.lib.Property
 import org.uqbar.commons.model.Entity
 import org.uqbar.commons.utils.Observable
 import org.uqbar.commons.model.UserException
+import domain.Calificacion
 
 @Observable
 class OTFApplicationModel extends Entity {
@@ -21,49 +22,78 @@ class OTFApplicationModel extends Entity {
 
 	def void init() {
 
-		var partidoNuevo = new Partido
-
+		var partidoNuevo = new Partido		
 		var participante = new Estandar
 		participante.setNombre("Erwin")
 		participante.setHandicap(10)
 		partidoNuevo.suscribir(participante)
+		var calificacion = new Calificacion
+		calificacion.setNota(1)
+		participante.calificarJugador(partidoNuevo,participante,calificacion)
 		participante = new Estandar
 		participante.setNombre("Mariano")
 		participante.setHandicap(20)
 		partidoNuevo.suscribir(participante)
+		calificacion = new Calificacion
+		calificacion.setNota(2)
+		participante.calificarJugador(partidoNuevo,participante,calificacion)
 		participante = new Estandar
 		participante.setNombre("Maggie")
 		participante.setHandicap(30)
 		partidoNuevo.suscribir(participante)
+		calificacion = new Calificacion
+		calificacion.setNota(3)
+		participante.calificarJugador(partidoNuevo,participante,calificacion)
 		participante = new Estandar
 		participante.setNombre("Román")
 		participante.setHandicap(5)
 		partidoNuevo.suscribir(participante)
+		calificacion = new Calificacion
+		calificacion.setNota(4)
+		participante.calificarJugador(partidoNuevo,participante,calificacion)
 		participante = new Estandar
 		participante.setNombre("Pablo")
 		participante.setHandicap(1)
 		partidoNuevo.suscribir(participante)
+		calificacion = new Calificacion
+		calificacion.setNota(5)
+		participante.calificarJugador(partidoNuevo,participante,calificacion)
 
 		participante = new Estandar
 		participante.setNombre("Rogelio")
 		participante.setHandicap(10)
 		partidoNuevo.suscribir(participante)
+		calificacion = new Calificacion
+		calificacion.setNota(6)
+		participante.calificarJugador(partidoNuevo,participante,calificacion)
 		participante = new Estandar
 		participante.setNombre("Pepeto")
 		participante.setHandicap(20)
 		partidoNuevo.suscribir(participante)
+		calificacion = new Calificacion
+		calificacion.setNota(7)
+		participante.calificarJugador(partidoNuevo,participante,calificacion)
 		participante = new Estandar
 		participante.setNombre("Walflavio")
 		participante.setHandicap(30)
 		partidoNuevo.suscribir(participante)
+		calificacion = new Calificacion
+		calificacion.setNota(8)
+		participante.calificarJugador(partidoNuevo,participante,calificacion)
 		participante = new Estandar
 		participante.setNombre("Esteban")
 		participante.setHandicap(5)
 		partidoNuevo.suscribir(participante)
+		calificacion = new Calificacion
+		calificacion.setNota(9)
+		participante.calificarJugador(partidoNuevo,participante,calificacion)
 		participante = new Estandar
 		participante.setNombre("Sebastian")
 		participante.setHandicap(1)
 		partidoNuevo.suscribir(participante)
+		calificacion = new Calificacion
+		calificacion.setNota(10)
+		participante.calificarJugador(partidoNuevo,participante,calificacion)
 
 		var partidoNuevo2 = new Partido
 
