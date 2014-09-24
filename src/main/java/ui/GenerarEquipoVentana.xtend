@@ -16,6 +16,7 @@ import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.tables.Table
 import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.windows.WindowOwner
+import java.awt.Color
 
 class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 
@@ -48,9 +49,7 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 			new Panel(panelJugadores).setWidth(100), 200)
 		armarBotoneraOrdenamiento(new Panel(panelJugadores)).setWidth(100)
 
-		//Segundo panel
-		//panelAuxiliarHorizontal = new Panel(mainPanel)
-		//panelAuxiliarHorizontal.setLayout(new ColumnLayout(2))
+		
 		armarTablaEquipos("Orden tentativo", "modeloPartido.jugadoresOrdenados",
 			new Panel(panelJugadoresOrdenados).setWidth(100), 200)
 		armarBotoneraSeleccion(new Panel(panelJugadoresOrdenados)).setWidth(100)
@@ -154,7 +153,7 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 		tablaParticipantes.bindItemsToProperty(bindeableProperty)
 		tablaParticipantes.bindValueToProperty("jugadorSeleccionado")
 		tablaParticipantes.setHeigth(height)
-		new Column<Participante>(tablaParticipantes).setTitle("Nombre").bindContentsToProperty("nombre")
+		new Column<Participante>(tablaParticipantes).setTitle("Nombre").bindContentsToProperty("nombre").bindBackground("handicap",[Integer handicap|if(handicap >10) Color::BLUE else Color::WHITE])
 
 	}
 
