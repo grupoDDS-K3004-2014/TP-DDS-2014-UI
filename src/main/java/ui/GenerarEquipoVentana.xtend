@@ -33,26 +33,33 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 		new Label(mainPanel).setText(modelObject.modeloPartido.nombreDelPartido).setFontSize(15)
 
 		//Primer panel
-		var panelAuxiliarHorizontal = new Panel(mainPanel)
-		panelAuxiliarHorizontal.setLayout(new ColumnLayout(2))
+		var panel1Horizontal = new Panel(mainPanel)
+		var panel2Horizontal = new Panel(mainPanel)
+
+		panel1Horizontal.setLayout(new ColumnLayout(2))
+
+		var panelJugadores = new Panel(panel1Horizontal)
+		var panelJugadoresOrdenados = new Panel(panel1Horizontal)
+
+		panelJugadores.setLayout(new ColumnLayout(2))
+		panelJugadoresOrdenados.setLayout(new ColumnLayout(2))
+
 		armarTablaEquipos("Jugadores anotados", "modeloPartido.participantes",
-			new Panel(panelAuxiliarHorizontal).setWidth(100), 200)
-		armarBotoneraOrdenamiento(new Panel(panelAuxiliarHorizontal).setWidth(100))
+			new Panel(panelJugadores).setWidth(100), 200)
+		armarBotoneraOrdenamiento(new Panel(panelJugadores)).setWidth(100)
 
 		//Segundo panel
-		panelAuxiliarHorizontal = new Panel(mainPanel)
-		panelAuxiliarHorizontal.setLayout(new ColumnLayout(2))
-
+		//panelAuxiliarHorizontal = new Panel(mainPanel)
+		//panelAuxiliarHorizontal.setLayout(new ColumnLayout(2))
 		armarTablaEquipos("Orden tentativo", "modeloPartido.jugadoresOrdenados",
-			new Panel(panelAuxiliarHorizontal).setWidth(100), 200)
-		armarBotoneraSeleccion(new Panel(panelAuxiliarHorizontal).setWidth(100))
+			new Panel(panelJugadoresOrdenados).setWidth(100), 200)
+		armarBotoneraSeleccion(new Panel(panelJugadoresOrdenados)).setWidth(100)
 
 		//Tercer panel
-		panelAuxiliarHorizontal = new Panel(mainPanel)
-		panelAuxiliarHorizontal.setLayout(new ColumnLayout(2))
+		panel2Horizontal.setLayout(new ColumnLayout(2))
 
-		armarTablaEquipos2("Equipo A", "modeloPartido.equipoA", new Panel(panelAuxiliarHorizontal).setWidth(100), 110)
-		armarTablaEquipos2("Equipo B", "modeloPartido.equipoB", new Panel(panelAuxiliarHorizontal).setWidth(100), 110)
+		armarTablaEquipos2("Equipo A", "modeloPartido.equipoA", new Panel(panel2Horizontal).setWidth(100), 110)
+		armarTablaEquipos2("Equipo B", "modeloPartido.equipoB", new Panel(panel2Horizontal).setWidth(100), 110)
 
 	}
 
