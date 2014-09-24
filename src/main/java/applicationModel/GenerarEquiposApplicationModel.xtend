@@ -68,27 +68,37 @@ class GenerarEquiposApplicationModel extends Entity {
 			criterioCompuesto.criterios.add(criterioNPartidos)
 		}*/
 		validateCriterio
+		ordenNota
+		ordenHandicap
+		ordenNPartidos
+		validateMultiplesCriterios
+		refreshJugadoresOrdenados
+	}
 
-		if (criterioUltimoPartidoValidator) {
-			var arrayAux = new ArrayList
-			arrayAux = modeloPartido.participantes
-			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|jugador.calificaciones.head.nota]
-		}
-		if (criterioHandicapValidator) {
-			var arrayAux = new ArrayList
-			arrayAux = modeloPartido.participantes
-			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|jugador.handicap]
-			modeloPartido.jugadoresOrdenados.reverse
-		}
+	def ordenNPartidos() {
 		if (criterioUltimosNPartidosValidator) {
 			var arrayAux = new ArrayList
 			arrayAux = modeloPartido.participantes
 			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|jugador.getUltimasNotas(cantidadPartidos)]
 
 		}
-		validateMultiplesCriterios
+	}
 
-		refreshJugadoresOrdenados
+	def ordenHandicap() {
+		if (criterioHandicapValidator) {
+			var arrayAux = new ArrayList
+			arrayAux = modeloPartido.participantes
+			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|jugador.handicap]
+			modeloPartido.jugadoresOrdenados.reverse
+		}
+	}
+
+	def ordenNota() {
+		if (criterioUltimoPartidoValidator) {
+			var arrayAux = new ArrayList
+			arrayAux = modeloPartido.participantes
+			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|jugador.calificaciones.head.nota]
+		}
 	}
 
 	def validateMultiplesCriterios() {
@@ -108,9 +118,9 @@ class GenerarEquiposApplicationModel extends Entity {
 			var arrayAux = new ArrayList
 			arrayAux = modeloPartido.participantes
 			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|
-				jugador.getUltimasNotas(cantidadPartidos) + jugador.calificaciones.head.nota ]
+				jugador.getUltimasNotas(cantidadPartidos) + jugador.calificaciones.head.nota]
 		}
-		if (criterioUltimoPartidoValidator && criterioUltimosNPartidosValidator&&criterioUltimoPartidoValidator){
+		if (criterioUltimoPartidoValidator && criterioUltimosNPartidosValidator && criterioUltimoPartidoValidator) {
 			var arrayAux = new ArrayList
 			arrayAux = modeloPartido.participantes
 			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|
