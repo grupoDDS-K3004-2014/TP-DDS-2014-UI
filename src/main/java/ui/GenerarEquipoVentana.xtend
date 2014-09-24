@@ -16,6 +16,7 @@ import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.tables.Table
 import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.windows.WindowOwner
+import java.awt.Color
 
 class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 
@@ -33,26 +34,31 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 		new Label(mainPanel).setText(modelObject.modeloPartido.nombreDelPartido).setFontSize(15)
 
 		//Primer panel
-		var panelAuxiliarHorizontal = new Panel(mainPanel)
-		panelAuxiliarHorizontal.setLayout(new ColumnLayout(2))
+		var panel1Horizontal = new Panel(mainPanel)
+		var panel2Horizontal = new Panel(mainPanel)
+
+		panel1Horizontal.setLayout(new ColumnLayout(2))
+
+		var panelJugadores = new Panel(panel1Horizontal)
+		var panelJugadoresOrdenados = new Panel(panel1Horizontal)
+
+		panelJugadores.setLayout(new ColumnLayout(2))
+		panelJugadoresOrdenados.setLayout(new ColumnLayout(2))
+
 		armarTablaEquipos("Jugadores anotados", "modeloPartido.participantes",
-			new Panel(panelAuxiliarHorizontal).setWidth(100), 200)
-		armarBotoneraOrdenamiento(new Panel(panelAuxiliarHorizontal).setWidth(100))
+			new Panel(panelJugadores).setWidth(100), 200)
+		armarBotoneraOrdenamiento(new Panel(panelJugadores)).setWidth(100)
 
-		//Segundo panel
-		panelAuxiliarHorizontal = new Panel(mainPanel)
-		panelAuxiliarHorizontal.setLayout(new ColumnLayout(2))
-
+		
 		armarTablaEquipos("Orden tentativo", "modeloPartido.jugadoresOrdenados",
-			new Panel(panelAuxiliarHorizontal).setWidth(100), 200)
-		armarBotoneraSeleccion(new Panel(panelAuxiliarHorizontal).setWidth(100))
+			new Panel(panelJugadoresOrdenados).setWidth(100), 200)
+		armarBotoneraSeleccion(new Panel(panelJugadoresOrdenados)).setWidth(100)
 
 		//Tercer panel
-		panelAuxiliarHorizontal = new Panel(mainPanel)
-		panelAuxiliarHorizontal.setLayout(new ColumnLayout(2))
+		panel2Horizontal.setLayout(new ColumnLayout(2))
 
-		armarTablaEquipos2("Equipo A", "modeloPartido.equipoA", new Panel(panelAuxiliarHorizontal).setWidth(100), 110)
-		armarTablaEquipos2("Equipo B", "modeloPartido.equipoB", new Panel(panelAuxiliarHorizontal).setWidth(100), 110)
+		armarTablaEquipos2("Equipo A", "modeloPartido.equipoA", new Panel(panel2Horizontal).setWidth(100), 110)
+		armarTablaEquipos2("Equipo B", "modeloPartido.equipoB", new Panel(panel2Horizontal).setWidth(100), 110)
 
 	}
 
@@ -147,7 +153,7 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 		tablaParticipantes.bindItemsToProperty(bindeableProperty)
 		tablaParticipantes.bindValueToProperty("jugadorSeleccionado")
 		tablaParticipantes.setHeigth(height)
-		new Column<Participante>(tablaParticipantes).setTitle("Nombre").bindContentsToProperty("nombre")
+		new Column<Participante>(tablaParticipantes).setTitle("Nombre").bindContentsToProperty("nombre").bindBackground("handicap",[Integer handicap|if(handicap >10) Color::BLUE else Color::WHITE])
 
 	}
 
