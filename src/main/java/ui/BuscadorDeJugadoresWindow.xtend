@@ -86,6 +86,8 @@ class BuscadorDeJugadoresWindow extends Dialog<BuscardorDeJugadoresApplicationMo
 		new Button(actionsPanel).setCaption("Buscar").onClick[|modelObject.search].setAsDefault.disableOnError
 
 		new Button(actionsPanel).setCaption("Limpiar").onClick[|modelObject.clear]
+		
+		new Button(actionsPanel).setCaption("Inspeccionar jugador").onClick[|this.mostrarJugador].setAsDefault.disableOnError
 
 	}
 
@@ -103,8 +105,10 @@ class BuscadorDeJugadoresWindow extends Dialog<BuscardorDeJugadoresApplicationMo
 			bindBackground("handicap", [Integer handicap|if(handicap > 10) Color::BLUE else Color::WHITE])
 
 		new Column<Participante>(table).setTitle("apodo").setFixedSize(150).bindContentsToProperty("apodo")
-
-var columnaHandicap = new Column<Participante>(table)
+	
+		table.bindValueToProperty("jugadorSeleccionado")
+		
+		var columnaHandicap = new Column<Participante>(table)
 		columnaHandicap.setTitle("handicap")
 		columnaHandicap.setFixedSize(100)
 		columnaHandicap.bindContentsToProperty("handicap")
@@ -117,6 +121,15 @@ var columnaHandicap = new Column<Participante>(table)
 			
 			
 
+	}
+	
+	
+	def void mostrarJugador() {
+	this.openDialog(new VentanaJugador(this, modelObject.jugadorSeleccionado))
+	}
+
+	def openDialog(Dialog<?> dialog) {
+		dialog.open
 	}
 	
 	

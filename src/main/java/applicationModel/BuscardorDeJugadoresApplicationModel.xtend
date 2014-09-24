@@ -20,6 +20,7 @@ class BuscardorDeJugadoresApplicationModel implements Serializable {
 	@Property long promedioHasta
 	@Property boolean tieneInfraccion = true
 	@Property boolean noTieneInfraccion = true
+	@Property Participante jugadorSeleccionado
 	HomeJugadores homeJugadores = new HomeJugadores
 
 	def void search() {
