@@ -99,7 +99,8 @@ class BuscadorDeJugadoresWindow extends Dialog<BuscardorDeJugadoresApplicationMo
 	}
 
 	def void describeResultsGrid(Table<Participante> table) {
-		new Column<Participante>(table).setTitle("Nombre").setFixedSize(150).bindContentsToProperty("nombre")
+		new Column<Participante>(table).setTitle("Nombre").setFixedSize(150).bindContentsToProperty("nombre").
+			bindBackground("handicap", [Integer handicap|if(handicap > 10) Color::BLUE else Color::WHITE])
 
 		new Column<Participante>(table).setTitle("apodo").setFixedSize(150).bindContentsToProperty("apodo")
 
@@ -107,12 +108,12 @@ var columnaHandicap = new Column<Participante>(table)
 		columnaHandicap.setTitle("handicap")
 		columnaHandicap.setFixedSize(100)
 		columnaHandicap.bindContentsToProperty("handicap")
-		columnaHandicap.foreground = Color.blue
+		
 		
 	
 
 		new Column<Participante>(table).setTitle("Promedio").setFixedSize(150).
-			bindContentsToProperty("promedio").foreground = Color.blue
+			bindContentsToProperty("promedio")
 			
 			
 
