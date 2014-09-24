@@ -62,7 +62,8 @@ class VentanaPrincipal extends SimpleWindow<OTFApplicationModel> {
 		var generarEquipos = new Button(panelBotonesPartidos).setCaption("Generar Equipos").onClick([|generarEquipos])
 		var confirmarEquipos = new Button(panelBotonesPartidos).setCaption("Confirmar/Desconfirmar partido").
 			onClick([|confirmarPartido])
-		new Button(panelBotonesPartidos).setCaption("Buscar Jugador").onClick([|buscarJugador]).setAsDefault.disableOnError
+			
+		new Button(panelBotonesPartidos).setCaption("Buscar Jugador").onClick([|buscarJugador])
 	
 
 		// Destilda los botones si no esta marcado un partido

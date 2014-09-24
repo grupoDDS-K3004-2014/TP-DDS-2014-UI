@@ -153,7 +153,8 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 		tablaParticipantes.bindItemsToProperty(bindeableProperty)
 		tablaParticipantes.bindValueToProperty("jugadorSeleccionado")
 		tablaParticipantes.setHeigth(height)
-		new Column<Participante>(tablaParticipantes).setTitle("Nombre").bindContentsToProperty("nombre").bindBackground("handicap",[Integer handicap|if(handicap >10) Color::BLUE else Color::WHITE])
+		new Column<Participante>(tablaParticipantes).setTitle("Nombre").bindContentsToProperty("nombre").
+			bindBackground("handicap", [Integer handicap|if(handicap > 10) Color::BLUE else Color::WHITE])
 
 	}
 

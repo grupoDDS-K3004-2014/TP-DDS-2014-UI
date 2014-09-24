@@ -1,13 +1,12 @@
 package applicationModel
 
 import domain.Participante
+import home.HomeJugadores
 import java.io.Serializable
 import java.util.ArrayList
 import java.util.Date
 import java.util.List
-import org.uqbar.commons.utils.ApplicationContext
 import org.uqbar.commons.utils.Observable
-import home.HomeJugadores
 
 @Observable
 class BuscardorDeJugadoresApplicationModel implements Serializable {
@@ -21,6 +20,7 @@ class BuscardorDeJugadoresApplicationModel implements Serializable {
 	@Property long promedioHasta
 	@Property boolean tieneInfraccion = true
 	@Property boolean noTieneInfraccion = true
+	HomeJugadores homeJugadores = new HomeJugadores
 
 	def void search() {
 
@@ -32,7 +32,8 @@ class BuscardorDeJugadoresApplicationModel implements Serializable {
 
 	def HomeJugadores getHomeParticipantes() {
 
-		ApplicationContext.instance.getSingleton(typeof(Participante))
+		//ApplicationContext.instance.getSingleton(typeof(Participante))
+		return homeJugadores
 	}
 
 	def void clear() {
