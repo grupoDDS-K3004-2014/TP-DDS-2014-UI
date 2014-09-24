@@ -1,42 +1,60 @@
 package home
 
 import domain.Infraccion
-import domain.InfraccionBajaSinRemplazo
 import domain.Participante
+import java.awt.Color
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.List
 import org.apache.commons.collections15.Predicate
 import org.uqbar.commons.model.CollectionBasedHome
-import java.awt.Color
+import java.util.ArrayList
+import domain.Estandar
 
 class HomeJugadores extends CollectionBasedHome<Participante> {
 
 	SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy")
-	Infraccion infraccion1 = new InfraccionBajaSinRemplazo
-	
 
 	new() {
 		this.init
 	}
 
 	def void create(String nombre, String apodo, int handicap, String fechaNacimiento, long promedio,
-		List<Infraccion> infracciones) {
+		ArrayList<Participante> amigos) {
 		var jugador = new Participante
 		jugador.nombre = nombre
 		jugador.apodo = apodo
 		jugador.handicap = handicap
 		jugador.fechaNacimiento = stringToDate(fechaNacimiento)
 		jugador.promedio = promedio
-		jugador.infracciones = infracciones
+		jugador.amigos = amigos
 		this.create(jugador)
 
 	}
 
 	def void init() {
-		this.create("Juan", "pela", 60, "12/12/1990", 130, #[infraccion1])
-		this.create("Marcos", "mar", 50, "12/10/1997", 10, #[])
-		this.create("Martin", "tinchito", 90, "27/12/1992", 47, #[])
+		var amigo = new Estandar
+		amigo.setNombre("Mariano")
+		var amigo2 = new Estandar
+		amigo.setNombre("Maggie")
+		var amigo3 = new Estandar
+		amigo.setNombre("Roman")
+		var amigo4 = new Estandar
+		amigo.setNombre("Pablo")
+		var amigo5 = new Estandar
+		amigo.setNombre("Erwin")
+
+		this.create("Erwin", "Erw", 10, "3/12/1992", 5, new ArrayList<Participante>(#[amigo2, amigo3, amigo4, amigo]))
+		this.create("Mariano", "das Marian", 20, "6/12/1992", 7, new ArrayList<Participante>(#[amigo5, amigo3, amigo4, amigo2]))
+		this.create("Maggie", "Maggie", 30, "7/12/1992", 27, new ArrayList<Participante>(#[amigo5, amigo3, amigo4, amigo]))
+		this.create("Román", "Romi", 5, "8/12/1992", 5, new ArrayList<Participante>(#[amigo5, amigo, amigo4, amigo2]))
+		this.create("Pablo", "Pablito", 3, "5/12/1992", 6, new ArrayList<Participante>(#[amigo, amigo2, amigo3, amigo5]))
+		this.create("Rogelio", "Roggi", 4, "27/12/1992", 10, new ArrayList<Participante>)
+		this.create("Pepeto", "Pep", 2, "28/12/1992", 7, new ArrayList<Participante>)
+		this.create("Walflavio", "Wally", 1, "29/12/1992", 2, new ArrayList<Participante>)
+		this.create("Esteban", "Esteban", 2, "30/12/1992", 23, new ArrayList<Participante>)
+		this.create("Sebastian", "Sebas", 0, "31/12/1992", 1, new ArrayList<Participante>)
+		this.create("Jose", "Pepe", 3, "27/8/1992", 0, new ArrayList<Participante>)
 	}
 
 	def Date stringToDate(String fecha) {

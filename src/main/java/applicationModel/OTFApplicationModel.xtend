@@ -9,12 +9,15 @@ import org.uqbar.commons.model.Entity
 import org.uqbar.commons.utils.Observable
 import org.uqbar.commons.model.UserException
 import domain.Calificacion
+import java.util.Date
+import java.text.SimpleDateFormat
 
 @Observable
 class OTFApplicationModel extends Entity {
 
 	@Property ArrayList<Partido> partidos = new ArrayList
 	@Property Partido partidoSeleccionado
+	SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy")
 
 	new() {
 		this.init()
@@ -22,78 +25,98 @@ class OTFApplicationModel extends Entity {
 
 	def void init() {
 
-		var partidoNuevo = new Partido		
+		var partidoNuevo = new Partido
 		var participante = new Estandar
 		participante.setNombre("Erwin")
+		participante.setApodo("Erw")
+		participante.setFechaNacimiento(stringToDate("3/12/1992"))
 		participante.setHandicap(10)
 		partidoNuevo.suscribir(participante)
 		var calificacion = new Calificacion
 		calificacion.setNota(1)
-		participante.calificarJugador(partidoNuevo,participante,calificacion)
+		participante.calificarJugador(partidoNuevo, participante, calificacion)
 		participante = new Estandar
 		participante.setNombre("Mariano")
+		participante.setApodo("das Marian")
+		participante.setFechaNacimiento(stringToDate("3/12/1992"))
 		participante.setHandicap(20)
 		partidoNuevo.suscribir(participante)
 		calificacion = new Calificacion
 		calificacion.setNota(2)
-		participante.calificarJugador(partidoNuevo,participante,calificacion)
+		participante.calificarJugador(partidoNuevo, participante, calificacion)
 		participante = new Estandar
 		participante.setNombre("Maggie")
+		participante.setApodo("Purri")
+		participante.setFechaNacimiento(stringToDate("3/12/1992"))
 		participante.setHandicap(30)
 		partidoNuevo.suscribir(participante)
 		calificacion = new Calificacion
 		calificacion.setNota(3)
-		participante.calificarJugador(partidoNuevo,participante,calificacion)
+		participante.calificarJugador(partidoNuevo, participante, calificacion)
 		participante = new Estandar
 		participante.setNombre("Román")
+		participante.setApodo("Romi")
+		participante.setFechaNacimiento(stringToDate("3/12/1992"))
 		participante.setHandicap(5)
 		partidoNuevo.suscribir(participante)
 		calificacion = new Calificacion
 		calificacion.setNota(4)
-		participante.calificarJugador(partidoNuevo,participante,calificacion)
+		participante.calificarJugador(partidoNuevo, participante, calificacion)
 		participante = new Estandar
 		participante.setNombre("Pablo")
+		participante.setApodo("Pablo")
+		participante.setFechaNacimiento(stringToDate("3/12/1992"))
 		participante.setHandicap(1)
 		partidoNuevo.suscribir(participante)
 		calificacion = new Calificacion
 		calificacion.setNota(5)
-		participante.calificarJugador(partidoNuevo,participante,calificacion)
+		participante.calificarJugador(partidoNuevo, participante, calificacion)
 
 		participante = new Estandar
 		participante.setNombre("Rogelio")
+		participante.setApodo("Rog")
+		participante.setFechaNacimiento(stringToDate("3/12/1992"))
 		participante.setHandicap(10)
 		partidoNuevo.suscribir(participante)
 		calificacion = new Calificacion
 		calificacion.setNota(6)
-		participante.calificarJugador(partidoNuevo,participante,calificacion)
+		participante.calificarJugador(partidoNuevo, participante, calificacion)
 		participante = new Estandar
 		participante.setNombre("Pepeto")
+		participante.setApodo("Pep")
+		participante.setFechaNacimiento(stringToDate("3/12/1992"))
 		participante.setHandicap(20)
 		partidoNuevo.suscribir(participante)
 		calificacion = new Calificacion
 		calificacion.setNota(7)
-		participante.calificarJugador(partidoNuevo,participante,calificacion)
+		participante.calificarJugador(partidoNuevo, participante, calificacion)
 		participante = new Estandar
 		participante.setNombre("Walflavio")
+		participante.setApodo("Wally")
+		participante.setFechaNacimiento(stringToDate("3/12/1992"))
 		participante.setHandicap(30)
 		partidoNuevo.suscribir(participante)
 		calificacion = new Calificacion
 		calificacion.setNota(8)
-		participante.calificarJugador(partidoNuevo,participante,calificacion)
+		participante.calificarJugador(partidoNuevo, participante, calificacion)
 		participante = new Estandar
 		participante.setNombre("Esteban")
+		participante.setApodo("Ban")
+		participante.setFechaNacimiento(stringToDate("3/12/1992"))
 		participante.setHandicap(5)
 		partidoNuevo.suscribir(participante)
 		calificacion = new Calificacion
 		calificacion.setNota(9)
-		participante.calificarJugador(partidoNuevo,participante,calificacion)
+		participante.calificarJugador(partidoNuevo, participante, calificacion)
 		participante = new Estandar
 		participante.setNombre("Sebastian")
+		participante.setApodo("Sebas")
+		participante.setFechaNacimiento(stringToDate("3/12/1992"))
 		participante.setHandicap(1)
 		partidoNuevo.suscribir(participante)
 		calificacion = new Calificacion
 		calificacion.setNota(10)
-		participante.calificarJugador(partidoNuevo,participante,calificacion)
+		participante.calificarJugador(partidoNuevo, participante, calificacion)
 
 		var partidoNuevo2 = new Partido
 
@@ -133,7 +156,11 @@ class OTFApplicationModel extends Entity {
 		partidos.add(partidoNuevo3.setValores(2, Dia.Lunes, 1820, 14111993, "Los pibes de Accenture"))
 
 	}
-	
+
+	def Date stringToDate(String string) {
+		formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy")
+		formatoDelTexto.parse(string)
+	}
 
 	def refresh() {
 		var partidosAux = partidos
@@ -175,14 +202,13 @@ class OTFApplicationModel extends Entity {
 	def String fixTimeFormat(int horario) {
 		return ((horario / 100).toString) + ":" + ((horario % 100).toString)
 	}
-	
+
 	def confirmarPartido() {
 		validarConfirmacionPartido
-		if(partidoSeleccionado.confirmado == "Si") partidoSeleccionado.confirmado="No"
-		else partidoSeleccionado.confirmado="Si"
+		if(partidoSeleccionado.confirmado == "Si") partidoSeleccionado.confirmado = "No" else partidoSeleccionado.confirmado = "Si"
 		refreshPartidos
 	}
-	
+
 	def refreshPartidos() {
 		var a = partidos
 		var b = partidoSeleccionado
@@ -190,9 +216,9 @@ class OTFApplicationModel extends Entity {
 		partidos = a
 		partidoSeleccionado = b
 	}
-	
+
 	def validarConfirmacionPartido() {
-		if (partidoSeleccionado.equipoA.size != 5) throw new UserException("El equipo no está organizado")
+		if(partidoSeleccionado.equipoA.size != 5) throw new UserException("El equipo no está organizado")
 	}
 
 }
