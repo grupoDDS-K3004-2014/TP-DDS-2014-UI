@@ -1,6 +1,7 @@
 package ui
 
 import applicationModel.OTFApplicationModel
+import applicationModel.BuscardorDeJugadoresApplicationModel
 import domain.Partido
 import org.uqbar.arena.bindings.NotNullObservable
 import org.uqbar.arena.layout.ColumnLayout
@@ -61,6 +62,8 @@ class VentanaPrincipal extends SimpleWindow<OTFApplicationModel> {
 		var generarEquipos = new Button(panelBotonesPartidos).setCaption("Generar Equipos").onClick([|generarEquipos])
 		var confirmarEquipos = new Button(panelBotonesPartidos).setCaption("Confirmar/Desconfirmar partido").
 			onClick([|confirmarPartido])
+		new Button(panelBotonesPartidos).setCaption("Buscar Jugador").onClick([|buscarJugador]).setAsDefault.disableOnError
+	
 
 		// Destilda los botones si no esta marcado un partido
 		var equipoSelec = new NotNullObservable("partidoSeleccionado")
@@ -69,6 +72,11 @@ class VentanaPrincipal extends SimpleWindow<OTFApplicationModel> {
 
 	}
 
+def buscarJugador() {
+		
+	this.openDialog(new BuscadorDeJugadoresWindow(this, new BuscardorDeJugadoresApplicationModel))
+	}
+	
 	def confirmarPartido() {
 
 		modelObject.confirmarPartido()

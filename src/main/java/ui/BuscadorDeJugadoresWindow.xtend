@@ -9,13 +9,13 @@ import org.uqbar.arena.widgets.Panel
 import org.uqbar.arena.widgets.TextBox
 import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.tables.Table
-import org.uqbar.arena.windows.SimpleWindow
+import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.windows.WindowOwner
 import applicationModel.BuscardorDeJugadoresApplicationModel
 import org.uqbar.arena.bindings.DateAdapter
 import java.awt.Color
 
-class BuscadorDeJugadoresWindow extends SimpleWindow<BuscardorDeJugadoresApplicationModel> {
+class BuscadorDeJugadoresWindow extends Dialog<BuscardorDeJugadoresApplicationModel> {
 
 	
 	new(WindowOwner parent, BuscardorDeJugadoresApplicationModel model) {
