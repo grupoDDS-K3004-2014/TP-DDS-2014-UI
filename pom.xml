@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>DDS-2014</groupId>
+	<groupId>com.DDS2014</groupId>
 	<artifactId>TP-DDS-2014-UI</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>TP-DDS-2014-UI</name>
@@ -28,11 +28,11 @@
 		<dependency>
 			<groupId>org.uqbar-project</groupId>
 			<artifactId>arena-jface</artifactId>
-			<version>3.4-SNAPSHOT</version>
+			<version>3.3-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>com.DDS2014</groupId>
-			<artifactId>DDSDomain</artifactId>
+			<artifactId>TP-DDS-2014-DOMAIN</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>		
 	</dependencies>
