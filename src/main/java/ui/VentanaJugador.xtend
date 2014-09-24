@@ -33,11 +33,26 @@ class VentanaJugador extends Dialog<Participante> {
 		new Label(panelJugador).setText("Handicap:")
 		var c = new TextBox(panelJugador)
 		c.setWidth(145).bindValueToProperty("handicap")
+		
+		new Label(panelJugador).setText("Promedio Ultimo Partido:")
+		val criterioUltimoPartido = new CriterioUltimoPartido
+		criterioUltimoPartido.determinarPuntajeCriterio(jugador)
+		jugador.ultimaNota
+		new TextBox(panelJugador).setWidth(145).bindValueToProperty("ultimoPuntaje")
+
+		new Label(panelJugador).setText("Promedio Todos Partidos:")
+		val criterioNCalificaciones = new CriterioNCalificaciones
+		criterioNCalificaciones.determinarPuntajeCriterio(jugador)
+		jugador.calcularPromedio
+		new TextBox(panelJugador).setWidth(145).bindValueToProperty("promedio")
 
 		new Label(panelJugador).setText("Fecha Nacimiento:")
 		new TextBox(panelJugador).setWidth(145).bindValueToProperty("fechaNacimiento")
 
-		//armarTablaEquipos2("Amigos", "amigos",new Panel(mainPanel),100)
+		new Label(panelJugador).setText("Amigos:")
+		var tablaAmigos = new Table<Participante>(panelJugador, typeof(Participante))
+		tablaAmigos.bindItemsToProperty("amigos")
+		new Column<Participante>(tablaAmigos).setTitle("Nombre").bindContentsToProperty("nombre")
 
 	}
 
