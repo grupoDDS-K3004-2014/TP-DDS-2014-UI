@@ -1,9 +1,5 @@
 package applicationModel
 
-import domain.CriterioCompuesto
-import domain.CriterioHandicap
-import domain.CriterioNCalificaciones
-import domain.CriterioUltimoPartido
 import domain.Participante
 import domain.Partido
 import domain.Sistema
@@ -72,6 +68,7 @@ class GenerarEquiposApplicationModel extends Entity {
 			criterioCompuesto.criterios.add(criterioNPartidos)
 		}*/
 		validateCriterio
+
 		if (criterioUltimoPartidoValidator) {
 			var arrayAux = new ArrayList
 			arrayAux = modeloPartido.participantes
@@ -86,11 +83,39 @@ class GenerarEquiposApplicationModel extends Entity {
 		if (criterioUltimosNPartidosValidator) {
 			var arrayAux = new ArrayList
 			arrayAux = modeloPartido.participantes
-			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|jugador.handicap]
+			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|jugador.getUltimasNotas(cantidadPartidos)]
 
 		}
+		validateMultiplesCriterios
 
 		refreshJugadoresOrdenados
+	}
+
+	def validateMultiplesCriterios() {
+		if (criterioHandicapValidator && criterioUltimoPartidoValidator) {
+			var arrayAux = new ArrayList
+			arrayAux = modeloPartido.participantes
+			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|
+				jugador.calificaciones.head.nota + jugador.handicap]
+		}
+		if (criterioHandicapValidator && criterioUltimosNPartidosValidator) {
+			var arrayAux = new ArrayList
+			arrayAux = modeloPartido.participantes
+			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|
+				jugador.handicap + jugador.getUltimasNotas(cantidadPartidos)]
+		}
+		if (criterioUltimoPartidoValidator && criterioUltimosNPartidosValidator) {
+			var arrayAux = new ArrayList
+			arrayAux = modeloPartido.participantes
+			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|
+				jugador.getUltimasNotas(cantidadPartidos) + jugador.calificaciones.head.nota ]
+		}
+		if (criterioUltimoPartidoValidator && criterioUltimosNPartidosValidator&&criterioUltimoPartidoValidator){
+			var arrayAux = new ArrayList
+			arrayAux = modeloPartido.participantes
+			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|
+				jugador.getUltimasNotas(cantidadPartidos) + jugador.calificaciones.head.nota + jugador.handicap]
+		}
 	}
 
 	def refreshJugadoresOrdenados() {
