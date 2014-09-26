@@ -56,6 +56,8 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 
 		armarTablaEquipos2("Equipo A", "modeloPartido.equipoA", new Panel(panel2Horizontal).setWidth(100), 110)
 		armarTablaEquipos2("Equipo B", "modeloPartido.equipoB", new Panel(panel2Horizontal).setWidth(100), 110)
+		
+		
 
 	}
 
@@ -104,7 +106,7 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 		selectorInput.bindValueToProperty("quintoJugador")
 		selectorInput.bindVisibleToProperty("posicionCustom")
 
-		new Button(panelBoton).setCaption("Generar equipos").onClick([|modelObject.generarEquipos]).setWidth(120)
+		new Button(panelBoton).setCaption("Generar equipos").onClick([|modelObject.generarEquipos]).width=135
 
 	}
 
@@ -166,7 +168,7 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 			modelObject.modeloPartido.jugadoresOrdenados = new ArrayList<Participante>
 			this.cancel
 		]
-		new Button(actions).setCaption("Inspeccionar jugador").onClick[|this.mostrarJugador].setAsDefault.disableOnError
+		new Button(actions).setCaption("Inspeccionar jugador").onClick[|this.mostrarJugador]
 	}
 
 	def void mostrarJugador() {

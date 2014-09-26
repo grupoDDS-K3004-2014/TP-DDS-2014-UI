@@ -38,9 +38,10 @@ class VentanaPrincipal extends SimpleWindow<OTFApplicationModel> {
 
 		var generarEquipos = new Button(panelBotonesPartidos).setCaption("Generar Equipos").onClick([|generarEquipos])
 		var confirmarEquipos = new Button(panelBotonesPartidos).setCaption("Confirmar/Desconfirmar partido").
-			onClick([|confirmarPartido])
+			onClick([|modelObject.confirmarDesconfirmarPartido])
 
 		new Button(panelBotonesPartidos).setCaption("Buscar Jugador").onClick([|buscarJugador])
+		
 
 		// Destilda los botones si no esta marcado un partido
 		var equipoSelec = new NotNullObservable("partidoSeleccionado")
@@ -71,20 +72,13 @@ class VentanaPrincipal extends SimpleWindow<OTFApplicationModel> {
 		new Column<Partido>(tablaPartidos).setTitle("Equipo ya armado").
 			bindContentsToTransformer([partido|if(partido.equipoB.size != 5) "No" else "Si"]).setFixedSize(120)
 
-		new Column<Partido>(tablaPartidos).setTitle("Confirmado").bindContentsToTransformer([partido|partido.confirmado]).
-			setFixedSize(80)
+		new Column<Partido>(tablaPartidos).setTitle("Confirmado").bindContentsToProperty("confirmado").setFixedSize(80)
 
 	}
 
 	def buscarJugador() {
 
 		this.openDialog(new BuscadorDeJugadoresWindow(this, new BuscardorDeJugadoresApplicationModel))
-	}
-
-	def confirmarPartido() {
-
-		modelObject.confirmarPartido()
-		modelObject.refresh
 	}
 
 	def generarEquipos() {

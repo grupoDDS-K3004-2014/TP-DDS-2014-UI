@@ -1,10 +1,9 @@
 package home
 
+import domain.Dia
 import domain.partido.Partido
 import org.apache.commons.collections15.Predicate
 import org.uqbar.commons.model.CollectionBasedHome
-import domain.Dia
-import java.util.ArrayList
 
 class HomePartidos extends CollectionBasedHome<Partido> {
 
@@ -36,7 +35,7 @@ class HomePartidos extends CollectionBasedHome<Partido> {
 			periodicidad = 1
 			fecha = "30/11/2014"
 		]
-		
+
 		create(partido1)
 		create(partido2)
 		create(partido3)
@@ -59,8 +58,8 @@ class HomePartidos extends CollectionBasedHome<Partido> {
 		allInstances.filter[Partido partido|partido.nombreDelPartido == nombre]
 	}
 
-	def ArrayList<Partido> getPartidos() {
-		new ArrayList(allInstances)
+	def getPartidos() {
+		allInstances
 	}
 
 }

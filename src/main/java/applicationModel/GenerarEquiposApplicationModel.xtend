@@ -97,9 +97,9 @@ class GenerarEquiposApplicationModel extends Entity {
 		validarSeleccion
 		if (parImparValidator) {
 			if (opcionSeleccionada == "Par")
-				modeloPartido.separarJugadoresOrdenados(new ArrayList(#[1, 3, 5, 7, 9]))
-			else
 				modeloPartido.separarJugadoresOrdenados(new ArrayList(#[2, 4, 6, 8, 10]))
+			else
+				modeloPartido.separarJugadoresOrdenados(new ArrayList(#[1, 3, 5, 7, 9]))
 
 		} else
 			modeloPartido.separarJugadoresOrdenados(parseInputArray)

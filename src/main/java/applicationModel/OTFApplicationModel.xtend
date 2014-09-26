@@ -8,19 +8,20 @@ import org.uqbar.commons.model.UserException
 import org.uqbar.commons.utils.Observable
 import home.HomePartidos
 import org.uqbar.commons.utils.ApplicationContext
+import java.util.List
 
 @Observable
 class OTFApplicationModel extends Entity {
 
 	@Property Partido partidoSeleccionado
-	ArrayList<Partido> partidos = getHomePartidos().getPartidos
+	@Property List<Partido> partidos
 
-	def ArrayList<Partido> getPartidos() {
-		partidos = getHomePartidos().getPartidos
+	new() {
+		init
 	}
 
-	def ArrayList<Partido> setPartidos(ArrayList<Partido> partido) {
-		partidos = getHomePartidos().getPartidos()
+	def init() {
+		partidos = homePartidos.partidos
 	}
 
 	def HomePartidos getHomePartidos() {
@@ -29,7 +30,7 @@ class OTFApplicationModel extends Entity {
 
 	def refresh() {
 		partidos = new ArrayList
-		partidos = getHomePartidos().getPartidos
+		partidos = getHomePartidos().partidos
 	}
 
 	def validarEquipoListoParaOrganizar() {
@@ -64,18 +65,13 @@ class OTFApplicationModel extends Entity {
 		return ((horario / 100).toString) + ":" + ((horario % 100).toString)
 	}
 
-	def confirmarPartido() {
-		validarConfirmacionPartido
-		if (partidoSeleccionado.confirmado == "No")
-			partidoSeleccionado.confirmado = "Si"
-		if (partidoSeleccionado.confirmado == "Si")
-			partidoSeleccionado.confirmado = "No"
-		refresh
-
-	}
-
 	def validarConfirmacionPartido() {
 		if(partidoSeleccionado.equipoA.size != 5) throw new UserException("El equipo no está organizado")
+	}
+
+	def confirmarDesconfirmarPartido() {
+		validarConfirmacionPartido
+		partidoSeleccionado.confirmarDesconfirmarPartido
 	}
 
 }
