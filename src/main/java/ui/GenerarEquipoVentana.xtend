@@ -1,8 +1,6 @@
 package ui
 
 import applicationModel.GenerarEquiposApplicationModel
-import domain.Participante
-import domain.Partido
 import java.util.ArrayList
 import org.uqbar.arena.layout.ColumnLayout
 import org.uqbar.arena.layout.VerticalLayout
@@ -17,6 +15,8 @@ import org.uqbar.arena.widgets.tables.Table
 import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.windows.WindowOwner
 import java.awt.Color
+import domain.partido.Partido
+import domain.jugadores.Participante
 
 class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 
@@ -33,7 +33,6 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 		mainPanel.setLayout(new VerticalLayout)
 		new Label(mainPanel).setText(modelObject.modeloPartido.nombreDelPartido).setFontSize(15)
 
-		//Primer panel
 		var panel1Horizontal = new Panel(mainPanel)
 		var panel2Horizontal = new Panel(mainPanel)
 
@@ -49,12 +48,10 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 			new Panel(panelJugadores).setWidth(100), 200)
 		armarBotoneraOrdenamiento(new Panel(panelJugadores)).setWidth(100)
 
-		
 		armarTablaEquipos("Orden tentativo", "modeloPartido.jugadoresOrdenados",
 			new Panel(panelJugadoresOrdenados).setWidth(100), 200)
 		armarBotoneraSeleccion(new Panel(panelJugadoresOrdenados)).setWidth(100)
 
-		//Tercer panel
 		panel2Horizontal.setLayout(new ColumnLayout(2))
 
 		armarTablaEquipos2("Equipo A", "modeloPartido.equipoA", new Panel(panel2Horizontal).setWidth(100), 110)
@@ -107,7 +104,7 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 		selectorInput.bindValueToProperty("quintoJugador")
 		selectorInput.bindVisibleToProperty("posicionCustom")
 
-		new Button(panelBoton).setCaption("Generar equipos").onClick([|modelObject.generarEquipos])
+		new Button(panelBoton).setCaption("Generar equipos").onClick([|modelObject.generarEquipos]).setWidth(120)
 
 	}
 
@@ -159,7 +156,10 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 	}
 
 	override protected void addActions(Panel actions) {
-		new Button(actions).setCaption("Aceptar").onClick[|this.accept].setAsDefault.disableOnError
+		new Button(actions).setCaption("Aceptar").onClick [ |
+			modelObject.validarAceptar
+			this.accept
+		].setAsDefault.disableOnError
 
 		new Button(actions).setCaption("Cancelar").onClick [ |
 			modelObject.copiarValoresDe(partidoClon)

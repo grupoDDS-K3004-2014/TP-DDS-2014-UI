@@ -1,21 +1,17 @@
 package ui
 
-import domain.Participante
-import org.uqbar.arena.layout.ColumnLayout
+import domain.jugadores.Participante
 import org.uqbar.arena.widgets.Label
 import org.uqbar.arena.widgets.Panel
-import org.uqbar.arena.widgets.TextBox
-import org.uqbar.arena.windows.Dialog
-import org.uqbar.arena.windows.WindowOwner
 import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.tables.Table
+import org.uqbar.arena.windows.Dialog
+import org.uqbar.arena.windows.WindowOwner
 import java.awt.Color
-import domain.CriterioUltimoPartido
-import domain.CriterioNCalificaciones
+import domain.infracciones.Infraccion
+import domain.calificaciones.Calificacion
 
 class VentanaJugador extends Dialog<Participante> {
-
-	@Property Participante jugador
 
 	new(WindowOwner parent, Participante model) {
 		super(parent, model)
@@ -23,44 +19,40 @@ class VentanaJugador extends Dialog<Participante> {
 	}
 
 	override protected createFormPanel(Panel mainPanel) {
-		title = "Datos Jugador"
-		val panelJugador = new Panel(mainPanel)
-		panelJugador.setLayout(new ColumnLayout(2))
-		new Label(panelJugador).setText("Nombre:")
-		var a = new TextBox(panelJugador)
-		a.setWidth(145).bindValueToProperty("nombre")
-		new Label(panelJugador).setText("Apodo:")
-		var b = new TextBox(panelJugador)
-		b.setWidth(145).bindValueToProperty("apodo")
-		new Label(panelJugador).setText("Handicap:")
-		var c = new TextBox(panelJugador)
-		c.setWidth(145).bindValueToProperty("handicap")
+		title = "Datos del jugador"
 
-		new Label(panelJugador).setText("Fecha Nacimiento:")
-		new TextBox(panelJugador).setWidth(145).bindValueToProperty("fechaNacimiento")
+		new Label(mainPanel).setText(modelObject.nombre + " alias: " + modelObject.apodo).setFontSize(15)
+		new Label(mainPanel)
+		new Label(mainPanel)
+		new Label(mainPanel).setText("Handicap: " + modelObject.handicap).setFontSize(11)
+		new Label(mainPanel).setText("Fecha Nacimiento: " + modelObject.fechaNacimiento).setFontSize(11)
+		new Label(mainPanel).setText("Promedio del ultimo partido: " + modelObject.ultimaNota).setFontSize(11)
+		new Label(mainPanel).setText("Promedio general: " + modelObject.ultimasNotas(modelObject.calificaciones.size)).
+			setFontSize(12)
 
-		new Label(panelJugador).setText("Amigos:")
-		var tablaAmigos = new Table<Participante>(panelJugador, typeof(Participante))
+		new Label(mainPanel)
+		new Label(mainPanel).setText("Amigos")
+		var tablaAmigos = new Table<Participante>(mainPanel, typeof(Participante))
 		tablaAmigos.bindItemsToProperty("amigos")
-		new Column<Participante>(tablaAmigos).setTitle("Nombre").bindContentsToProperty("nombre")
+		new Column<Participante>(tablaAmigos).setTitle("Nombre").bindContentsToProperty("nombre").
+			bindBackground("handicap", [Integer handicap|if(handicap > 10) Color::cyan else Color::WHITE]).
+			setFixedSize(80)
 
-	}
+		new Label(mainPanel)
+		new Label(mainPanel).setText("Infracciones")
+		var tablaInfracciones = new Table<Infraccion>(mainPanel, typeof(Infraccion))
+		tablaInfracciones.bindItemsToProperty("infracciones")
+		new Column<Infraccion>(tablaInfracciones).setTitle("Fecha").bindContentsToProperty("fecha").setFixedSize(80)
+		new Column<Infraccion>(tablaInfracciones).setTitle("Motivo").bindContentsToProperty("motivo").setFixedSize(100)
 
-	def String fixDateFormat(int fecha) {
-		((fecha / 1000000).toString) + "/" + (((fecha) / 10000) % 100).toString + "/" + (fecha % 10000).toString
-	}
-
-	def String fixTimeFormat(int horario) {
-		return ((horario / 100).toString) + ":" + ((horario % 100).toString)
-	}
-
-	def armarTablaEquipos2(String tituloTabla, String bindeableProperty, Panel panelArmado, int height) {
-		new Label(panelArmado).setText(tituloTabla)
-		var tablaParticipantes = new Table<Participante>(panelArmado, typeof(Participante))
-		tablaParticipantes.bindItemsToProperty(bindeableProperty)		
-		tablaParticipantes.setHeigth(height)
-		new Column<Participante>(tablaParticipantes).setTitle("Nombre").bindContentsToProperty("nombre").
-			bindBackground("handicap", [Integer handicap|if(handicap > 10) Color::BLUE else Color::WHITE])
+		new Label(mainPanel)
+		new Label(mainPanel).setText("Calificaciones")
+		var tablaCalificaciones = new Table<Calificacion>(mainPanel, typeof(Calificacion))
+		tablaCalificaciones.bindItemsToProperty("calificaciones")
+		new Column<Calificacion>(tablaCalificaciones).setTitle("Fecha").bindContentsToProperty("fecha").setFixedSize(80)
+		new Column<Calificacion>(tablaCalificaciones).setTitle("Nota").bindContentsToProperty("nota").setFixedSize(50)
+		new Column<Calificacion>(tablaCalificaciones).setTitle("Descripcion").bindContentsToProperty("descripcion").
+			setFixedSize(100)
 
 	}
 

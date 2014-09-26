@@ -1,8 +1,8 @@
 package ui
 
-import applicationModel.OTFApplicationModel
 import applicationModel.BuscardorDeJugadoresApplicationModel
-import domain.Partido
+import applicationModel.OTFApplicationModel
+import domain.partido.Partido
 import org.uqbar.arena.bindings.NotNullObservable
 import org.uqbar.arena.layout.ColumnLayout
 import org.uqbar.arena.widgets.Button
@@ -27,44 +27,20 @@ class VentanaPrincipal extends SimpleWindow<OTFApplicationModel> {
 	override protected createFormPanel(Panel mainPanel) {
 
 		title = "Organizador de partidos de Futbol 5"
-		val panelPartidos = new Panel(mainPanel)
-		panelPartidos.setLayout(new ColumnLayout(2))
-		val panelGrilla = new Panel(panelPartidos)
-		val panelBotonesPartidos = new Panel(panelPartidos)
-		new Label(panelGrilla).setText("Listado de Partidos").setFontSize(15)
+		new Label(mainPanel).setText("Listado de Partidos").setFontSize(15)
 
-		var tablaPartidos = new Table<Partido>(panelGrilla, typeof(Partido))
-		tablaPartidos.bindItemsToProperty("partidos")
-		tablaPartidos.bindValueToProperty("partidoSeleccionado")
-		new Column<Partido>(tablaPartidos).setTitle("Nombre").bindContentsToProperty("nombreDelPartido").
-			setFixedSize(160)
+		val panelPrincipal = new Panel(mainPanel)
+		panelPrincipal.setLayout(new ColumnLayout(2))
+		val panelGrilla = new Panel(panelPrincipal)
+		val panelBotonesPartidos = new Panel(panelPrincipal)
 
-		new Column<Partido>(tablaPartidos).setTitle("Veces por mes").bindContentsToProperty("periodicidad").
-			setFixedSize(90)
-
-		new Column<Partido>(tablaPartidos).setTitle("Proxima fecha").bindContentsToTransformer(
-			[partido|modelObject.fixDateFormat(partido.getFecha())]).setFixedSize(100)
-
-		new Column<Partido>(tablaPartidos).setTitle("Horario").bindContentsToTransformer(
-			[partido|modelObject.fixTimeFormat(partido.getHorario())]).setFixedSize(70)
-
-		new Column<Partido>(tablaPartidos).setTitle("Día").bindContentsToTransformer(
-			[partido|modelObject.fixDiaFormat(partido.getDia)]).setFixedSize(80)
-		new Column<Partido>(tablaPartidos).setTitle("Cantidad Inscriptos").
-			bindContentsToTransformer([partido|(partido.cantidadInscriptos).toString]).setFixedSize(120)
-
-		new Column<Partido>(tablaPartidos).setTitle("Equipo ya armado").
-			bindContentsToTransformer([partido|if(partido.equipoA.size != 5) "No" else "Si"]).setFixedSize(120)
-
-		new Column<Partido>(tablaPartidos).setTitle("Confirmado").bindContentsToTransformer([partido|partido.confirmado]).
-			setFixedSize(80)
+		crearTabla(panelGrilla)
 
 		var generarEquipos = new Button(panelBotonesPartidos).setCaption("Generar Equipos").onClick([|generarEquipos])
 		var confirmarEquipos = new Button(panelBotonesPartidos).setCaption("Confirmar/Desconfirmar partido").
 			onClick([|confirmarPartido])
-			
+
 		new Button(panelBotonesPartidos).setCaption("Buscar Jugador").onClick([|buscarJugador])
-	
 
 		// Destilda los botones si no esta marcado un partido
 		var equipoSelec = new NotNullObservable("partidoSeleccionado")
@@ -73,27 +49,54 @@ class VentanaPrincipal extends SimpleWindow<OTFApplicationModel> {
 
 	}
 
-def buscarJugador() {
-		
-	this.openDialog(new BuscadorDeJugadoresWindow(this, new BuscardorDeJugadoresApplicationModel))
+	def crearTabla(Panel panelGrilla) {
+
+		var tablaPartidos = new Table<Partido>(panelGrilla, typeof(Partido))
+		tablaPartidos.bindItemsToProperty("partidos")
+		tablaPartidos.bindValueToProperty("partidoSeleccionado")
+		new Column<Partido>(tablaPartidos).setTitle("Nombre").bindContentsToProperty("nombreDelPartido").
+			setFixedSize(160)
+		new Column<Partido>(tablaPartidos).setTitle("Veces por mes").bindContentsToProperty("periodicidad").
+			setFixedSize(90)
+		new Column<Partido>(tablaPartidos).setTitle("Proxima fecha").bindContentsToTransformer(
+			[partido|partido.fecha]).setFixedSize(100)
+		new Column<Partido>(tablaPartidos).setTitle("Horario").bindContentsToTransformer(
+			[partido|modelObject.fixTimeFormat(partido.getHorario())]).setFixedSize(70)
+		new Column<Partido>(tablaPartidos).setTitle("Día").bindContentsToTransformer(
+			[partido|modelObject.fixDiaFormat(partido.getDia)]).setFixedSize(70)
+
+		new Column<Partido>(tablaPartidos).setTitle("Cantidad de jugadores").
+			bindContentsToTransformer([partido|partido.cantidadParticipantes]).setFixedSize(140)
+
+		new Column<Partido>(tablaPartidos).setTitle("Equipo ya armado").
+			bindContentsToTransformer([partido|if(partido.equipoB.size != 5) "No" else "Si"]).setFixedSize(120)
+
+		new Column<Partido>(tablaPartidos).setTitle("Confirmado").bindContentsToTransformer([partido|partido.confirmado]).
+			setFixedSize(80)
+
 	}
-	
+
+	def buscarJugador() {
+
+		this.openDialog(new BuscadorDeJugadoresWindow(this, new BuscardorDeJugadoresApplicationModel))
+	}
+
 	def confirmarPartido() {
 
 		modelObject.confirmarPartido()
-
+		modelObject.refresh
 	}
 
 	def generarEquipos() {
 		modelObject.validateGenerarEquipos
-		var aux = modelObject.partidoSeleccionado
 		this.openDialog(new GenerarEquipoVentana(this, modelObject.partidoSeleccionado))
-		modelObject.partidoSeleccionado = aux
+		modelObject.refresh
 	}
 
 	def openDialog(Dialog<?> dialog) {
 		dialog.onAccept[|modelObject.refresh]
 		dialog.open
+
 	}
 
 }

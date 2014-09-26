@@ -1,53 +1,66 @@
 package applicationModel
 
-import domain.Participante
+import domain.jugadores.Participante
 import home.HomeJugadores
 import java.io.Serializable
 import java.util.ArrayList
-import java.util.Date
-import java.util.List
+import org.uqbar.commons.model.UserException
+import org.uqbar.commons.utils.ApplicationContext
 import org.uqbar.commons.utils.Observable
 
 @Observable
 class BuscardorDeJugadoresApplicationModel implements Serializable {
-	@Property String nombre
-	@Property Date fechaNacimientoAnterior
+	@Property String nombre = ""
+	@Property String fechaNacimientoAnterior = ""
 	@Property int handicapInicial
 	@Property String apodo
-	@Property List<Participante> resultadoParticipantes
+	@Property ArrayList<Participante> resultadoParticipantes
 	@Property int handicapFinal
-	@Property long promedioDesde
-	@Property long promedioHasta
-	@Property boolean tieneInfraccion = true
-	@Property boolean noTieneInfraccion = true
+	@Property int notaUltimoPartidoDesde
+	@Property int notaUltimoPartidoHasta
+	@Property boolean tieneInfraccion = false
 	@Property Participante jugadorSeleccionado
-	HomeJugadores homeJugadores = new HomeJugadores
 
 	def void search() {
-
+		validarFechaDeNacimiento
 		resultadoParticipantes = new ArrayList<Participante>
 		resultadoParticipantes = getHomeParticipantes().search(nombre, fechaNacimientoAnterior, handicapInicial,
-			handicapFinal, apodo, tieneInfraccion, noTieneInfraccion, promedioDesde, promedioHasta)
+			handicapFinal, apodo, tieneInfraccion, notaUltimoPartidoDesde, notaUltimoPartidoHasta)
+
+	}
+
+	def validarFechaDeNacimiento() {
+		if (fechaNacimientoAnterior != "")
+			if(fechaNacimientoAnterior.length != 4) throw new UserException("Ingrese el año como AAAA")
 
 	}
 
 	def HomeJugadores getHomeParticipantes() {
 
-		//ApplicationContext.instance.getSingleton(typeof(Participante))
-		return homeJugadores
+		ApplicationContext.instance.getSingleton(typeof(Participante))
+
 	}
 
 	def void clear() {
 
-		nombre = null
-		fechaNacimientoAnterior = null
+		nombre = ""
+		fechaNacimientoAnterior = ""
 		handicapInicial = 0
 		handicapFinal = 0
-		apodo = null
-		promedioDesde = 0
-		promedioHasta = 0
+		apodo = ""
+		notaUltimoPartidoDesde = 0
+		notaUltimoPartidoHasta = 0
 		tieneInfraccion = false
-		noTieneInfraccion = false
+		resultadoParticipantes = homeParticipantes.searchAll
+	}
+
+	def validarJugadorSeleccionado() {
+		if (jugadorSeleccionado == null)
+			throw new UserException("No se seleccionó jugador")
+	}
+
+	def searchAll() {
+		resultadoParticipantes = getHomeParticipantes().searchAll()
 	}
 
 }

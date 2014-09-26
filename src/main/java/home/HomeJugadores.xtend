@@ -1,66 +1,149 @@
 package home
 
-import domain.Infraccion
-import domain.Participante
-import java.awt.Color
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.List
+import domain.calificaciones.Calificacion
+import domain.infracciones.InfraccionMalaConducta
+import domain.jugadores.Estandar
+import domain.jugadores.Participante
+import java.util.ArrayList
 import org.apache.commons.collections15.Predicate
 import org.uqbar.commons.model.CollectionBasedHome
-import java.util.ArrayList
-import domain.Estandar
+import org.uqbar.commons.utils.ApplicationContext
+import domain.partido.Partido
 
 class HomeJugadores extends CollectionBasedHome<Participante> {
-
-	SimpleDateFormat formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy")
 
 	new() {
 		this.init
 	}
 
-	def void create(String nombre, String apodo, int handicap, String fechaNacimiento, long promedio,
-		ArrayList<Participante> amigos) {
-		var jugador = new Participante
-		jugador.nombre = nombre
-		jugador.apodo = apodo
-		jugador.handicap = handicap
-		jugador.fechaNacimiento = stringToDate(fechaNacimiento)
-		jugador.promedio = promedio
-		jugador.amigos = amigos
-		this.create(jugador)
-
-	}
-
 	def void init() {
-		var amigo = new Estandar
-		amigo.setNombre("Mariano")
-		var amigo2 = new Estandar
-		amigo.setNombre("Maggie")
-		var amigo3 = new Estandar
-		amigo.setNombre("Roman")
-		var amigo4 = new Estandar
-		amigo.setNombre("Pablo")
-		var amigo5 = new Estandar
-		amigo.setNombre("Erwin")
 
-		this.create("Erwin", "Erw", 10, "3/12/1992", 5, new ArrayList<Participante>(#[amigo2, amigo3, amigo4, amigo]))
-		this.create("Mariano", "das Marian", 20, "6/12/1992", 7, new ArrayList<Participante>(#[amigo5, amigo3, amigo4, amigo2]))
-		this.create("Maggie", "Maggie", 30, "7/12/1992", 27, new ArrayList<Participante>(#[amigo5, amigo3, amigo4, amigo]))
-		this.create("Román", "Romi", 5, "8/12/1992", 5, new ArrayList<Participante>(#[amigo5, amigo, amigo4, amigo2]))
-		this.create("Pablo", "Pablito", 3, "5/12/1992", 6, new ArrayList<Participante>(#[amigo, amigo2, amigo3, amigo5]))
-		this.create("Rogelio", "Roggi", 4, "27/12/1992", 10, new ArrayList<Participante>)
-		this.create("Pepeto", "Pep", 2, "28/12/1992", 7, new ArrayList<Participante>)
-		this.create("Walflavio", "Wally", 1, "29/12/1992", 2, new ArrayList<Participante>)
-		this.create("Esteban", "Esteban", 2, "30/12/1992", 23, new ArrayList<Participante>)
-		this.create("Sebastian", "Sebas", 0, "31/12/1992", 1, new ArrayList<Participante>)
-		this.create("Jose", "Pepe", 3, "27/8/1992", 0, new ArrayList<Participante>)
+		var partido1 = getHomePartidos().search("El superClasico de Martelli").head
+		var partido2 = getHomePartidos().search("Los pibes de Accenture").head
+		var partido3 = getHomePartidos().search("Don Torcuato copa").head
+
+		var erwin = new Estandar => [
+			nombre = "Erwin"
+			apodo = "Erw"
+			fechaNacimiento = "14/02/1993"
+			handicap = 5
+			calificaciones = new ArrayList<Calificacion>(
+				#[Calificacion.nueva(2, "Baboso!", "26/09/2014"), Calificacion.nueva(5, "Baboso!", "27/09/2014")])
+		]
+
+		var maggie = new Estandar => [
+			nombre = "Maggie"
+			apodo = "Purri"
+			fechaNacimiento = "28/05/1992"
+			handicap = 20
+			calificaciones = new ArrayList<Calificacion>(#[Calificacion.nueva(10, "Trompitástico!", "26/09/2014")])
+		]
+
+		var mariano = new Estandar => [
+			nombre = "Mariano"
+			apodo = "das Marian"
+			fechaNacimiento = "05/02/1993"
+			handicap = 12
+			calificaciones = new ArrayList<Calificacion>(#[Calificacion.nueva(3, "Lagoso", "26/09/2014")])
+		]
+		var roman = new Estandar => [
+			nombre = "Roman"
+			apodo = "Romi"
+			fechaNacimiento = "23/06/1994"
+			handicap = 5
+		]
+		var pablo = new Estandar => [
+			nombre = "Pablo"
+			apodo = "Pablito"
+			fechaNacimiento = "12/06/1993"
+			handicap = 1
+			infracciones = new ArrayList(
+				#[InfraccionMalaConducta.nueva("28/09/2014", "Cagarme con el regalo para Maggie")])
+			calificaciones = new ArrayList<Calificacion>(#[Calificacion.nueva(5, "Jugo bien", "26/09/2014")])
+		]
+
+		var pepeto = new Estandar => [
+			nombre = "Pepeto"
+			apodo = "el Pepi"
+			fechaNacimiento = "12/06/1983"
+			handicap = 5
+			calificaciones = new ArrayList<Calificacion>(
+				#[Calificacion.nueva(5, "Meh", "10/10/2010"), Calificacion.nueva(3, "Meh", "11/10/2010"),
+					Calificacion.nueva(6, "Meh", "12/10/2010")])
+		]
+
+		var rogelio = new Estandar => [
+			nombre = "Rogelio"
+			apodo = "Rogi"
+			fechaNacimiento = "27/04/1990"
+			handicap = 5
+			infracciones = new ArrayList(#[InfraccionMalaConducta.nueva("28/09/2014", "Pegarle al referi")])
+			calificaciones = new ArrayList<Calificacion>(#[Calificacion.nueva(5, "Meh", "10/10/2010")])
+		]
+
+		var walflavio = new Estandar => [
+			nombre = "Walflavio"
+			apodo = "Wally"
+			fechaNacimiento = "10/02/1980"
+			handicap = 5
+		]
+
+		var jesus = new Estandar => [
+			nombre = "Jesus"
+			apodo = "el mesias"
+			fechaNacimiento = "00/00/0000"
+			handicap = 33
+			calificaciones = new ArrayList<Calificacion>(#[Calificacion.nueva(10, "Resucito el partido", "11/10/2010")])
+		]
+
+		var sebastian = new Estandar => [
+			nombre = "Sebastian"
+			apodo = "Sebas"
+			fechaNacimiento = "05/02/1990"
+			handicap = 8
+			infracciones = new ArrayList(#[InfraccionMalaConducta.nueva("28/09/2014", "Llego muy tarde")])
+			calificaciones = new ArrayList<Calificacion>(#[Calificacion.nueva(5, "Meh", "10/10/2010")])
+		]
+		partido1.suscribir(erwin)
+		partido1.suscribir(maggie)
+		partido1.suscribir(mariano)
+		partido1.suscribir(pablo)
+		partido1.suscribir(roman)
+		partido1.suscribir(jesus)
+		partido1.suscribir(sebastian)
+		partido1.suscribir(walflavio)
+		partido1.suscribir(pepeto)
+		partido1.suscribir(rogelio)
+
+		partido2.suscribir(rogelio)
+		partido2.suscribir(pablo)
+		partido2.suscribir(walflavio)
+		partido2.suscribir(jesus)
+		partido2.suscribir(sebastian)
+		partido2.suscribir(pepeto)
+
+		partido3.suscribir(erwin)
+
+		create(erwin, new ArrayList<Participante>(#[maggie, mariano, pablo]))
+		create(maggie, new ArrayList<Participante>(#[erwin, mariano, roman, pablo]))
+		create(mariano, new ArrayList<Participante>(#[erwin, maggie, roman, pablo]))
+		create(pablo, new ArrayList<Participante>(#[erwin, maggie, mariano]))
+		create(roman, new ArrayList<Participante>(#[erwin, maggie, mariano]))
+		create(pepeto, new ArrayList<Participante>())
+		create(rogelio, new ArrayList<Participante>(#[jesus, walflavio]))
+		create(walflavio, new ArrayList<Participante>(#[erwin, mariano]))
+		create(jesus,
+			new ArrayList<Participante>(#[erwin, maggie, mariano, pablo, roman, pepeto, rogelio, walflavio, sebastian]))
+		create(sebastian, new ArrayList<Participante>(#[erwin, maggie]))
 	}
 
-	def Date stringToDate(String fecha) {
-		formatoDelTexto = new SimpleDateFormat("dd/MM/yyyy")
-		formatoDelTexto.parse(fecha)
+	def HomePartidos getHomePartidos() {
+		ApplicationContext.instance.getSingleton(typeof(Partido))
+	}
 
+	def create(Participante participante, ArrayList<Participante> listaDeAmigos) {
+		participante.amigos = listaDeAmigos
+		create(participante)
 	}
 
 	override protected Predicate<Participante> getCriterio(Participante example) {
@@ -75,19 +158,17 @@ class HomeJugadores extends CollectionBasedHome<Participante> {
 		typeof(Participante)
 	}
 
-	def search(String nombre, Date fechaNacimiento, int handicapInicial, int handicapFinal, String apodo,
-		boolean tieneInfraccion, boolean noTieneInfraccion, long promedioDesde, long promedioHasta) {
-		allInstances.filter[jugador|
-			this.tieneElNombre(nombre, jugador.nombre) && this.tieneElApodo(apodo, jugador.apodo) &&
-				this.cumpleCon(handicapInicial, jugador.handicap) &&
-				this.suHandicapEsMenorA(handicapFinal, jugador.handicap) &&
-				this.fechaAnteriorA(fechaNacimiento, jugador.fechaNacimiento) &&
-				this.cumpleInfracciones(tieneInfraccion, noTieneInfraccion, jugador.infracciones) &&
-				this.tienePromedioMenorA(promedioHasta, jugador.promedio) &&
-				this.tienePromedioMayorA(promedioDesde, jugador.promedio)].toList
-	}
-
-	def tieneColor(Color color) {
+	def search(String nombre, String fechaNacimiento, int handicapInicial, int handicapFinal, String apodo,
+		boolean tieneInfraccion, int promedioDesde, int promedioHasta) {
+		new ArrayList(
+			allInstances.filter[jugador|
+				this.tieneElNombre(nombre, jugador.nombre) && this.tieneElApodo(apodo, jugador.apodo) &&
+					this.cumpleCon(handicapInicial, jugador.handicap) &&
+					this.suHandicapEsMenorA(handicapFinal, jugador.handicap) &&
+					cumpleInfracciones(tieneInfraccion, jugador) &&
+					this.fechaAnteriorA(fechaNacimiento, jugador.fechaNacimiento) &&
+					this.tienePromedioMenorA(promedioHasta, jugador.ultimaNota) &&
+					this.tienePromedioMayorA(promedioDesde, jugador.ultimaNota)].toList)
 	}
 
 	def cumpleCon(int handicapInicial, int handicap) {
@@ -114,12 +195,16 @@ class HomeJugadores extends CollectionBasedHome<Participante> {
 		}
 	}
 
-	def fechaAnteriorA(Date date, Date fechaNacimiento) {
-		if (fechaNacimiento != null && date != null) {
-			fechaNacimiento.before(date)
-		} else {
-			return true
-		}
+	def fechaAnteriorA(String fechaNacimientoBusqueda, String fechaNacimientoJugador) {
+		if (fechaNacimientoBusqueda != "" && fechaNacimientoJugador != null)
+			verificarAño(fechaNacimientoBusqueda, fechaNacimientoJugador.substring(6))
+		else
+			true
+
+	}
+
+	def verificarAño(String fechaBusqueda, String fechaJugador) {
+		Integer.parseInt(fechaJugador) < Integer.parseInt(fechaBusqueda)
 	}
 
 	def suHandicapEsMenorA(int handicapMayor, int handicap) {
@@ -130,16 +215,12 @@ class HomeJugadores extends CollectionBasedHome<Participante> {
 		}
 	}
 
-	def cumpleInfracciones(boolean tieneInfraccion, boolean noTieneInfraccion, List<Infraccion> infracciones) {
-		if (tieneInfraccion && noTieneInfraccion == false) {
-			infracciones.size != 0
-		} else {
-			if (tieneInfraccion == false && noTieneInfraccion) {
-				infracciones.size == 0
-			} else {
-				true
-			}
-		}
+	def cumpleInfracciones(boolean tieneInfraccion, Participante jugador) {
+
+		if (tieneInfraccion)
+			jugador.infracciones.size != 0
+		else
+			jugador.infracciones.size == 0
 
 	}
 
@@ -157,6 +238,10 @@ class HomeJugadores extends CollectionBasedHome<Participante> {
 		} else {
 			promedio > promedioMenor
 		}
+	}
+
+	def searchAll() {
+		new ArrayList(allInstances)
 	}
 
 }

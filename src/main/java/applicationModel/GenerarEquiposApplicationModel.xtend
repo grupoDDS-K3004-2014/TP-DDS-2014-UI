@@ -1,18 +1,19 @@
 package applicationModel
 
-import domain.Participante
-import domain.Partido
-import domain.Sistema
+import domain.jugadores.Participante
+import domain.partido.Partido
 import java.util.ArrayList
-import java.util.Arrays
 import org.uqbar.commons.model.Entity
 import org.uqbar.commons.model.UserException
 import org.uqbar.commons.utils.Observable
+import domain.criterios.CriterioCompuesto
+import domain.criterios.CriterioHandicap
+import domain.criterios.CriterioUltimoPartido
+import domain.criterios.CriterioNCalificaciones
 
 @Observable
 class GenerarEquiposApplicationModel extends Entity {
 
-	@Property Sistema sistema = new Sistema
 	@Property boolean criterioHandicapValidator = false
 	@Property boolean criterioUltimoPartidoValidator = false
 	@Property boolean criterioUltimosNPartidosValidator = false
@@ -25,11 +26,12 @@ class GenerarEquiposApplicationModel extends Entity {
 	@Property boolean posicionCustom = false
 	@Property Participante jugadorSeleccionado
 	@Property String primerJugador = "1"
-	@Property String segundoJugador = "1"
-	@Property String tercerJugador = "1"
-	@Property String cuartoJugador = "1"
-	@Property String quintoJugador = "1"
+	@Property String segundoJugador = "2"
+	@Property String tercerJugador = "3"
+	@Property String cuartoJugador = "4"
+	@Property String quintoJugador = "5"
 	@Property ArrayList<String> listaDePosiciones = new ArrayList<String>
+	@Property CriterioCompuesto criterioCompuesto = new CriterioCompuesto
 
 	new(Partido partido) {
 		modeloPartido = partido
@@ -57,75 +59,19 @@ class GenerarEquiposApplicationModel extends Entity {
 	}
 
 	def ordenarJugadores() {
-		validateNPartidos
-
-		/*var criterioCompuesto = new CriterioCompuesto
-		if(criterioHandicapValidator) criterioCompuesto.criterios.add(new CriterioHandicap)
-		if(criterioUltimoPartidoValidator) criterioCompuesto.criterios.add(new CriterioUltimoPartido)
-		if (criterioUltimosNPartidosValidator) {
-			var criterioNPartidos = new CriterioNCalificaciones
-			criterioNPartidos.setCantidadCalificaciones(cantidadPartidos)
-			criterioCompuesto.criterios.add(criterioNPartidos)
-		}*/
 		validateCriterio
-		ordenNota
-		ordenHandicap
-		ordenNPartidos
-		validateMultiplesCriterios
-		refreshJugadoresOrdenados
-	}
-
-	def ordenNPartidos() {
+		criterioCompuesto.criterios.clear
+		if (criterioHandicapValidator)
+			criterioCompuesto.agregarCriterio(new CriterioHandicap)
+		if (criterioUltimoPartidoValidator)
+			criterioCompuesto.agregarCriterio(new CriterioUltimoPartido)
 		if (criterioUltimosNPartidosValidator) {
-			var arrayAux = new ArrayList
-			arrayAux = modeloPartido.participantes
-			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|jugador.getUltimasNotas(cantidadPartidos)]
+			validateNPartidos
+			criterioCompuesto.agregarCriterio(CriterioNCalificaciones.nuevo(cantidadPartidos))
+		}
 
-		}
-	}
-
-	def ordenHandicap() {
-		if (criterioHandicapValidator) {
-			var arrayAux = new ArrayList
-			arrayAux = modeloPartido.participantes
-			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|jugador.handicap]
-			modeloPartido.jugadoresOrdenados.reverse
-		}
-	}
-
-	def ordenNota() {
-		if (criterioUltimoPartidoValidator) {
-			var arrayAux = new ArrayList
-			arrayAux = modeloPartido.participantes
-			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|jugador.calificaciones.head.nota]
-		}
-	}
-
-	def validateMultiplesCriterios() {
-		if (criterioHandicapValidator && criterioUltimoPartidoValidator) {
-			var arrayAux = new ArrayList
-			arrayAux = modeloPartido.participantes
-			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|
-				jugador.calificaciones.head.nota + jugador.handicap]
-		}
-		if (criterioHandicapValidator && criterioUltimosNPartidosValidator) {
-			var arrayAux = new ArrayList
-			arrayAux = modeloPartido.participantes
-			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|
-				jugador.handicap + jugador.getUltimasNotas(cantidadPartidos)]
-		}
-		if (criterioUltimoPartidoValidator && criterioUltimosNPartidosValidator) {
-			var arrayAux = new ArrayList
-			arrayAux = modeloPartido.participantes
-			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|
-				jugador.getUltimasNotas(cantidadPartidos) + jugador.calificaciones.head.nota]
-		}
-		if (criterioUltimoPartidoValidator && criterioUltimosNPartidosValidator && criterioUltimoPartidoValidator) {
-			var arrayAux = new ArrayList
-			arrayAux = modeloPartido.participantes
-			modeloPartido.jugadoresOrdenados = arrayAux.sortBy[jugador|
-				jugador.getUltimasNotas(cantidadPartidos) + jugador.calificaciones.head.nota + jugador.handicap]
-		}
+		modeloPartido.ordenarJugadores(criterioCompuesto)
+		refreshJugadoresOrdenados
 	}
 
 	def refreshJugadoresOrdenados() {
@@ -149,22 +95,28 @@ class GenerarEquiposApplicationModel extends Entity {
 
 	def generarEquipos() {
 		validarSeleccion
-		validarOrdenPrevio
-		if (posicionCustom) {
-			validarInput
-			sistema.generarEquiposTentativos(modeloPartido, parseInputArray)
-			sistema.confirmarEquipos(modeloPartido)
-		}
 		if (parImparValidator) {
-			if (opcionSeleccionada == "Par") {
-				sistema.generarEquiposTentativos(modeloPartido, new ArrayList<Integer>(Arrays.asList(1, 3, 5, 7, 9)))
-				sistema.confirmarEquipos(modeloPartido)
-			} else {
-				sistema.generarEquiposTentativos(modeloPartido, new ArrayList<Integer>(Arrays.asList(2, 4, 6, 8, 10)))
-				sistema.confirmarEquipos(modeloPartido)
-			}
-		}
+			if (opcionSeleccionada == "Par")
+				modeloPartido.separarJugadoresOrdenados(new ArrayList(#[1, 3, 5, 7, 9]))
+			else
+				modeloPartido.separarJugadoresOrdenados(new ArrayList(#[2, 4, 6, 8, 10]))
 
+		} else
+			modeloPartido.separarJugadoresOrdenados(parseInputArray)
+
+		moverEquipos
+		
+
+	}
+
+	def moverEquipos() {
+		var aux = modeloPartido.equipoA
+		modeloPartido.equipoA = new ArrayList
+		modeloPartido.equipoA = aux
+
+		aux = modeloPartido.equipoB
+		modeloPartido.equipoB = new ArrayList
+		modeloPartido.equipoB = aux
 	}
 
 	def validarSeleccion() {
@@ -177,6 +129,7 @@ class GenerarEquiposApplicationModel extends Entity {
 	}
 
 	def ArrayList<Integer> parseInputArray() {
+		validarSelectoresRepetidos
 		var arrayPosiciones = new ArrayList<Integer>
 		arrayPosiciones.add(toInt(primerJugador))
 		arrayPosiciones.add(toInt(segundoJugador))
@@ -184,6 +137,17 @@ class GenerarEquiposApplicationModel extends Entity {
 		arrayPosiciones.add(toInt(cuartoJugador))
 		arrayPosiciones.add(toInt(quintoJugador))
 		return arrayPosiciones
+	}
+
+	def validarSelectoresRepetidos() {
+		var a = new ArrayList
+		a.add(primerJugador)
+		a.add(segundoJugador)
+		a.add(tercerJugador)
+		a.add(cuartoJugador)
+		a.add(quintoJugador)
+		if (a.toSet.size != 5)
+			throw new UserException("Hay posiciones repetidas, por favor corrígalas")
 	}
 
 	def validarOrdenPrevio() {
@@ -212,6 +176,10 @@ class GenerarEquiposApplicationModel extends Entity {
 
 	def validarJugadorSeleccionado() {
 		if(jugadorSeleccionado == null) throw new UserException("No se seleccionó a ningún jugador")
+	}
+
+	def validarAceptar() {
+		if(modeloPartido.equipoA.size != 5) throw new UserException("No se puede aceptar un equipo no armado")
 	}
 
 }
