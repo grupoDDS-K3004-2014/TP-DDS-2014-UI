@@ -41,7 +41,6 @@ class VentanaPrincipal extends SimpleWindow<OTFApplicationModel> {
 			onClick([|modelObject.confirmarDesconfirmarPartido])
 
 		new Button(panelBotonesPartidos).setCaption("Buscar Jugador").onClick([|buscarJugador])
-		
 
 		// Destilda los botones si no esta marcado un partido
 		var equipoSelec = new NotNullObservable("partidoSeleccionado")
@@ -55,14 +54,19 @@ class VentanaPrincipal extends SimpleWindow<OTFApplicationModel> {
 		var tablaPartidos = new Table<Partido>(panelGrilla, typeof(Partido))
 		tablaPartidos.bindItemsToProperty("partidos")
 		tablaPartidos.bindValueToProperty("partidoSeleccionado")
+
 		new Column<Partido>(tablaPartidos).setTitle("Nombre").bindContentsToProperty("nombreDelPartido").
 			setFixedSize(160)
+
 		new Column<Partido>(tablaPartidos).setTitle("Veces por mes").bindContentsToProperty("periodicidad").
 			setFixedSize(90)
+
 		new Column<Partido>(tablaPartidos).setTitle("Proxima fecha").bindContentsToTransformer(
 			[partido|partido.fecha]).setFixedSize(100)
+
 		new Column<Partido>(tablaPartidos).setTitle("Horario").bindContentsToTransformer(
 			[partido|modelObject.fixTimeFormat(partido.getHorario())]).setFixedSize(70)
+
 		new Column<Partido>(tablaPartidos).setTitle("Día").bindContentsToTransformer(
 			[partido|modelObject.fixDiaFormat(partido.getDia)]).setFixedSize(70)
 
