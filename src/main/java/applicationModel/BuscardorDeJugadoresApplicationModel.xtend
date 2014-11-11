@@ -1,12 +1,12 @@
 package applicationModel
 
 import domain.jugadores.Participante
-import home.HomeJugadores
 import java.io.Serializable
-import java.util.ArrayList
+import java.util.HashSet
+import java.util.Set
 import org.uqbar.commons.model.UserException
-import org.uqbar.commons.utils.ApplicationContext
 import org.uqbar.commons.utils.Observable
+import persistencia.HomeParticipantes
 
 @Observable
 class BuscardorDeJugadoresApplicationModel implements Serializable {
@@ -14,7 +14,7 @@ class BuscardorDeJugadoresApplicationModel implements Serializable {
 	@Property String fechaNacimientoAnterior = ""
 	@Property int handicapInicial
 	@Property String apodo
-	@Property ArrayList<Participante> resultadoParticipantes
+	@Property Set<Participante> resultadoParticipantes
 	@Property int handicapFinal
 	@Property int notaUltimoPartidoDesde
 	@Property int notaUltimoPartidoHasta
@@ -23,8 +23,8 @@ class BuscardorDeJugadoresApplicationModel implements Serializable {
 
 	def void search() {
 		validarFechaDeNacimiento
-		resultadoParticipantes = new ArrayList<Participante>
-		resultadoParticipantes = getHomeParticipantes().search(nombre, fechaNacimientoAnterior, handicapInicial,
+		resultadoParticipantes = new HashSet<Participante>
+		resultadoParticipantes = new HomeParticipantes().search(nombre, fechaNacimientoAnterior, handicapInicial,
 			handicapFinal, apodo, tieneInfraccion, notaUltimoPartidoDesde, notaUltimoPartidoHasta)
 
 	}
@@ -34,12 +34,7 @@ class BuscardorDeJugadoresApplicationModel implements Serializable {
 			if(fechaNacimientoAnterior.length != 4) throw new UserException("Ingrese el año como AAAA")
 
 	}
-
-	def HomeJugadores getHomeParticipantes() {
-
-		ApplicationContext.instance.getSingleton(typeof(Participante))
-
-	}
+	
 
 	def void clear() {
 
@@ -51,7 +46,7 @@ class BuscardorDeJugadoresApplicationModel implements Serializable {
 		notaUltimoPartidoDesde = 0
 		notaUltimoPartidoHasta = 0
 		tieneInfraccion = false
-		resultadoParticipantes = homeParticipantes.searchAll
+		resultadoParticipantes = new HomeParticipantes().getAll()
 	}
 
 	def validarJugadorSeleccionado() {
@@ -60,7 +55,7 @@ class BuscardorDeJugadoresApplicationModel implements Serializable {
 	}
 
 	def searchAll() {
-		resultadoParticipantes = getHomeParticipantes().searchAll()
+		resultadoParticipantes = new HomeParticipantes().getAll()
 	}
 
 }

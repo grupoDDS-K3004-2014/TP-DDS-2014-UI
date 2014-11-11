@@ -1,7 +1,10 @@
 package ui
 
 import applicationModel.GenerarEquiposApplicationModel
-import java.util.ArrayList
+import domain.jugadores.Participante
+import domain.partido.Partido
+import java.awt.Color
+import java.util.HashSet
 import org.uqbar.arena.layout.ColumnLayout
 import org.uqbar.arena.layout.VerticalLayout
 import org.uqbar.arena.widgets.Button
@@ -14,9 +17,6 @@ import org.uqbar.arena.widgets.tables.Column
 import org.uqbar.arena.widgets.tables.Table
 import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.windows.WindowOwner
-import java.awt.Color
-import domain.partido.Partido
-import domain.jugadores.Participante
 
 class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 
@@ -165,7 +165,7 @@ class GenerarEquipoVentana extends Dialog<GenerarEquiposApplicationModel> {
 
 		new Button(actions).setCaption("Cancelar").onClick [ |
 			modelObject.copiarValoresDe(partidoClon)
-			modelObject.modeloPartido.jugadoresOrdenados = new ArrayList<Participante>
+			modelObject.modeloPartido.jugadoresOrdenados = new HashSet<Participante>
 			this.cancel
 		]
 		new Button(actions).setCaption("Inspeccionar jugador").onClick[|this.mostrarJugador]

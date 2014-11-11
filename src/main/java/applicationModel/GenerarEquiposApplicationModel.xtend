@@ -10,6 +10,7 @@ import domain.criterios.CriterioCompuesto
 import domain.criterios.CriterioHandicap
 import domain.criterios.CriterioUltimoPartido
 import domain.criterios.CriterioNCalificaciones
+import java.util.HashSet
 
 @Observable
 class GenerarEquiposApplicationModel extends Entity {
@@ -76,7 +77,7 @@ class GenerarEquiposApplicationModel extends Entity {
 
 	def refreshJugadoresOrdenados() {
 		var arrayAux = modeloPartido.jugadoresOrdenados
-		modeloPartido.jugadoresOrdenados = new ArrayList
+		modeloPartido.jugadoresOrdenados = new HashSet
 		modeloPartido.jugadoresOrdenados = arrayAux
 
 	}
@@ -111,11 +112,11 @@ class GenerarEquiposApplicationModel extends Entity {
 
 	def moverEquipos() {
 		var aux = modeloPartido.equipoA
-		modeloPartido.equipoA = new ArrayList
+		modeloPartido.equipoA = new HashSet
 		modeloPartido.equipoA = aux
 
 		aux = modeloPartido.equipoB
-		modeloPartido.equipoB = new ArrayList
+		modeloPartido.equipoB = new HashSet
 		modeloPartido.equipoB = aux
 	}
 

@@ -68,7 +68,7 @@ class VentanaPrincipal extends SimpleWindow<OTFApplicationModel> {
 			[partido|modelObject.fixTimeFormat(partido.getHorario())]).setFixedSize(70)
 
 		new Column<Partido>(tablaPartidos).setTitle("Día").bindContentsToTransformer(
-			[partido|modelObject.fixDiaFormat(partido.getDia)]).setFixedSize(70)
+			[partido|partido.getDia]).setFixedSize(70)
 
 		new Column<Partido>(tablaPartidos).setTitle("Cantidad de jugadores").
 			bindContentsToTransformer([partido|partido.cantidadParticipantes]).setFixedSize(140)
