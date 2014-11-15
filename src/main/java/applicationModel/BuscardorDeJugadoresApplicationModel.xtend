@@ -46,7 +46,7 @@ class BuscardorDeJugadoresApplicationModel implements Serializable {
 		notaUltimoPartidoDesde = 0
 		notaUltimoPartidoHasta = 0
 		tieneInfraccion = false
-		resultadoParticipantes = new HomeParticipantes().getAll()
+		resultadoParticipantes = HomeParticipantes::getAll()
 	}
 
 	def validarJugadorSeleccionado() {
@@ -55,7 +55,7 @@ class BuscardorDeJugadoresApplicationModel implements Serializable {
 	}
 
 	def searchAll() {
-		resultadoParticipantes = new HomeParticipantes().getAll()
+		resultadoParticipantes = HomeParticipantes::getAll()
 	}
 
 }

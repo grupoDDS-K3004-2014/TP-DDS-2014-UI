@@ -13,6 +13,7 @@ import org.uqbar.arena.widgets.tables.Table
 import org.uqbar.arena.windows.Dialog
 import org.uqbar.arena.windows.SimpleWindow
 import org.uqbar.arena.windows.WindowOwner
+import persistencia.SessionManager
 
 class VentanaPrincipal extends SimpleWindow<OTFApplicationModel> {
 
@@ -67,8 +68,8 @@ class VentanaPrincipal extends SimpleWindow<OTFApplicationModel> {
 		new Column<Partido>(tablaPartidos).setTitle("Horario").bindContentsToTransformer(
 			[partido|modelObject.fixTimeFormat(partido.getHorario())]).setFixedSize(70)
 
-		new Column<Partido>(tablaPartidos).setTitle("Día").bindContentsToTransformer(
-			[partido|partido.getDia]).setFixedSize(70)
+		new Column<Partido>(tablaPartidos).setTitle("Día").bindContentsToTransformer([partido|partido.getDia]).
+			setFixedSize(70)
 
 		new Column<Partido>(tablaPartidos).setTitle("Cantidad de jugadores").
 			bindContentsToTransformer([partido|partido.cantidadParticipantes]).setFixedSize(140)
@@ -87,7 +88,14 @@ class VentanaPrincipal extends SimpleWindow<OTFApplicationModel> {
 
 	def generarEquipos() {
 		modelObject.validateGenerarEquipos
+		var pSelec = modelObject.partidoSeleccionado
 		this.openDialog(new GenerarEquipoVentana(this, modelObject.partidoSeleccionado))
+		var session = SessionManager::sessionFactory.openSession
+		session.beginTransaction
+		session.merge(pSelec)
+		session.flush
+		session.transaction.commit
+		session.close
 		modelObject.refresh
 	}
 
