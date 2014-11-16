@@ -106,7 +106,6 @@ class GenerarEquiposApplicationModel extends Entity {
 			modeloPartido.separarJugadoresOrdenados(parseInputArray)
 
 		moverEquipos
-		
 
 	}
 

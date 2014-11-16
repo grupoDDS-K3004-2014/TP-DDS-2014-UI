@@ -12,19 +12,19 @@ import persistencia.HomeParticipantes
 class BuscardorDeJugadoresApplicationModel implements Serializable {
 	@Property String nombre = ""
 	@Property String fechaNacimientoAnterior = ""
-	@Property int handicapInicial
-	@Property String apodo
+	@Property int handicapInicial = 0
+	@Property String apodo = ""
 	@Property Set<Participante> resultadoParticipantes
-	@Property int handicapFinal
-	@Property int notaUltimoPartidoDesde
-	@Property int notaUltimoPartidoHasta
+	@Property int handicapFinal = 0
+	@Property int notaUltimoPartidoDesde = 0
+	@Property int notaUltimoPartidoHasta = 0
 	@Property boolean tieneInfraccion = false
 	@Property Participante jugadorSeleccionado
 
 	def void search() {
 		validarFechaDeNacimiento
 		resultadoParticipantes = new HashSet<Participante>
-		resultadoParticipantes = new HomeParticipantes().search(nombre, fechaNacimientoAnterior, handicapInicial,
+		resultadoParticipantes = HomeParticipantes::search(nombre, fechaNacimientoAnterior, handicapInicial,
 			handicapFinal, apodo, tieneInfraccion, notaUltimoPartidoDesde, notaUltimoPartidoHasta)
 
 	}
@@ -34,7 +34,6 @@ class BuscardorDeJugadoresApplicationModel implements Serializable {
 			if(fechaNacimientoAnterior.length != 4) throw new UserException("Ingrese el año como AAAA")
 
 	}
-	
 
 	def void clear() {
 
